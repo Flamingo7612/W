@@ -2,179 +2,892 @@
 <html lang="ru">
 
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
+<meta name="description" content="Личный кабинет клиента — Сварочная мастерская">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<title>Личный кабинет — Сварочная мастерская</title>
 
-    <title>Личный кабинет</title>
+<style>
 
-    <style>
+:root{
+    --green:#123d2a;
+    --green2:#1d5a3d;
+    --red:#d62828;
+    --bg:#f7faf8;
+    --light:#e8f1eb;
+    --text:#17231b;
+    --muted:#617066;
+    --white:#fff;
+    --border:#d7e3da;
+    --shadow:0 15px 40px rgba(18,61,42,.12);
+    --radius:18px;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
-            padding: 30px;
-        }
+html{
+    scroll-behavior:smooth;
+}
 
-        .container {
-            max-width: 500px;
-            margin: auto;
-        }
+body{
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+}
 
-        h1 {
-            margin-bottom: 25px;
-        }
+a{
+    text-decoration:none;
+    color:inherit;
+}
 
-        .block {
-            background: #1d1d1d;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
 
-        input {
-            width: 100%;
-            padding: 13px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            border: none;
-            border-radius: 8px;
-        }
+/* ============================= */
+/* HEADER */
+/* ============================= */
 
-        button {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background: #168f50;
-            color: white;
-            font-size: 16px;
-            margin-top: 10px;
-        }
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:70px;
+    background:rgba(18,61,42,.96);
+    backdrop-filter:blur(10px);
+    z-index:1000;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
 
-        button:hover {
-            opacity: 0.85;
-        }
+.header-inner{
+    height:100%;
+    width:min(1180px,calc(100% - 40px));
+    margin:auto;
 
-        #account {
-            display: none;
-        }
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
 
-    </style>
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:white;
+}
+
+.logo-mark{
+    width:42px;
+    height:42px;
+
+    display:grid;
+    place-items:center;
+
+    background:var(--red);
+    border-radius:10px;
+
+    font-size:21px;
+}
+
+.logo strong{
+    display:block;
+    font-size:16px;
+}
+
+.logo span{
+    display:block;
+    color:#b9c9bf;
+    font-size:12px;
+}
+
+.nav{
+    display:flex;
+    gap:28px;
+
+    color:#dce7df;
+    font-size:15px;
+}
+
+.nav a:hover{
+    color:#fff;
+}
+
+
+/* ============================= */
+/* MAIN */
+/* ============================= */
+
+main{
+    min-height:100vh;
+    padding:130px 20px 80px;
+}
+
+.container{
+    width:min(900px,100%);
+    margin:auto;
+}
+
+
+/* ============================= */
+/* PAGE TITLE */
+/* ============================= */
+
+.page-header{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.label{
+    color:var(--red);
+    font-size:13px;
+    font-weight:800;
+
+    text-transform:uppercase;
+    letter-spacing:.12em;
+
+    margin-bottom:10px;
+}
+
+.page-header h1{
+    color:#10291d;
+
+    font-size:clamp(36px,5vw,52px);
+
+    line-height:1.1;
+
+    margin-bottom:15px;
+}
+
+.page-header p{
+    color:var(--muted);
+    font-size:17px;
+}
+
+
+/* ============================= */
+/* PROFILE CARD */
+/* ============================= */
+
+.profile-card{
+    background:#fff;
+
+    border:1px solid var(--border);
+    border-radius:24px;
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+}
+
+
+/* верхняя зелёная часть */
+
+.profile-top{
+    background:#10291d;
+
+    padding:35px;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+
+    gap:20px;
+}
+
+
+/* аватар */
+
+.avatar{
+    width:75px;
+    height:75px;
+
+    flex-shrink:0;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:var(--red);
+
+    color:white;
+
+    font-size:30px;
+    font-weight:bold;
+
+    border:4px solid rgba(255,255,255,.15);
+}
+
+
+.profile-top h2{
+    font-size:27px;
+    margin-bottom:5px;
+}
+
+.profile-top p{
+    color:#b9c9bf;
+    font-size:14px;
+}
+
+
+/* ============================= */
+/* INFO */
+/* ============================= */
+
+.profile-content{
+    padding:35px;
+}
+
+.info-grid{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:18px;
+}
+
+.info-item{
+    padding:20px;
+
+    background:#f7faf8;
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+}
+
+.info-item small{
+    display:block;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-bottom:6px;
+}
+
+.info-item strong{
+    color:var(--green);
+
+    font-size:16px;
+
+    word-break:break-word;
+}
+
+
+/* ============================= */
+/* DIVIDER */
+/* ============================= */
+
+.divider{
+    height:1px;
+
+    background:var(--border);
+
+    margin:35px 0;
+}
+
+
+/* ============================= */
+/* EDIT PROFILE */
+/* ============================= */
+
+.edit-title{
+    color:var(--green);
+
+    font-size:24px;
+
+    margin-bottom:8px;
+}
+
+.edit-description{
+    color:var(--muted);
+
+    font-size:14px;
+
+    margin-bottom:22px;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+
+    color:var(--green);
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    margin-bottom:7px;
+}
+
+.form-group input{
+    width:100%;
+
+    padding:14px 15px;
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    background:#f7faf8;
+
+    color:var(--text);
+
+    font-size:16px;
+
+    outline:none;
+
+    transition:.2s;
+}
+
+.form-group input:focus{
+    border-color:var(--red);
+
+    background:#fff;
+}
+
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+
+.buttons{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-top:20px;
+}
+
+.btn{
+    min-height:50px;
+
+    padding:0 22px;
+
+    border:0;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-primary{
+    background:var(--red);
+
+    color:white;
+
+    box-shadow:0 8px 20px rgba(214,40,40,.22);
+}
+
+.btn-secondary{
+    background:#fff;
+
+    color:var(--green);
+
+    border:1px solid var(--border);
+}
+
+.btn-green{
+    background:var(--green);
+
+    color:white;
+}
+
+.btn-green:hover{
+    background:var(--green2);
+}
+
+
+/* ============================= */
+/* MESSAGE */
+/* ============================= */
+
+.message{
+    display:none;
+
+    margin-top:15px;
+
+    padding:12px 15px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:bold;
+}
+
+.message.success{
+    display:block;
+
+    background:#e8f1eb;
+
+    color:var(--green);
+}
+
+.message.error{
+    display:block;
+
+    background:#ffe7e7;
+
+    color:var(--red);
+}
+
+
+/* ============================= */
+/* LOGOUT */
+/* ============================= */
+
+.logout-area{
+    margin-top:35px;
+
+    padding-top:25px;
+
+    border-top:1px solid var(--border);
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+}
+
+.logout-text strong{
+    display:block;
+
+    color:var(--green);
+
+    margin-bottom:3px;
+}
+
+.logout-text span{
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+/* ============================= */
+/* LOADING */
+/* ============================= */
+
+#loading{
+    text-align:center;
+
+    padding:50px;
+
+    color:var(--muted);
+
+    font-size:17px;
+}
+
+#profile{
+    display:none;
+}
+
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media(max-width:700px){
+
+    .nav{
+        display:none;
+    }
+
+    .header-inner{
+        width:calc(100% - 30px);
+    }
+
+    main{
+        padding:110px 15px 60px;
+    }
+
+    .page-header{
+        margin-bottom:30px;
+    }
+
+    .page-header h1{
+        font-size:38px;
+    }
+
+    .profile-top{
+        padding:25px;
+
+        align-items:flex-start;
+    }
+
+    .avatar{
+        width:60px;
+        height:60px;
+
+        font-size:24px;
+    }
+
+    .profile-top h2{
+        font-size:22px;
+    }
+
+    .profile-content{
+        padding:25px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .logout-area{
+        display:block;
+    }
+
+    .logout-area .btn{
+        width:100%;
+        margin-top:18px;
+    }
+
+    .buttons{
+        display:grid;
+        grid-template-columns:1fr;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+}
+
+</style>
 
 </head>
 
 
 <body>
 
+
+<!-- ============================= -->
+<!-- HEADER -->
+<!-- ============================= -->
+
+<header>
+
+<div class="header-inner">
+
+<a class="logo" href="index.html">
+
+<div class="logo-mark">⚒</div>
+
+<div>
+<strong>Сварочная мастерская</strong>
+<span>Сварка • Металлоконструкции</span>
+</div>
+
+</a>
+
+
+<nav class="nav">
+
+<a href="index.html">Главная</a>
+
+<a href="index.html#services">Услуги</a>
+
+<a href="index.html#calculator">Калькулятор</a>
+
+<a href="index.html#works">Работы</a>
+
+<a href="index.html#contacts">Контакты</a>
+
+</nav>
+
+</div>
+
+</header>
+
+
+
+<!-- ============================= -->
+<!-- MAIN -->
+<!-- ============================= -->
+
+<main>
+
 <div class="container">
 
-    <h1>Личный кабинет</h1>
+
+<div class="page-header">
+
+<div class="label">
+Личный кабинет
+</div>
+
+<h1>Мой профиль</h1>
+
+<p>
+Управляйте своими контактными данными
+</p>
+
+</div>
 
 
-    <!-- РЕГИСТРАЦИЯ -->
 
-    <div class="block" id="registerBlock">
+<!-- LOADING -->
 
-        <h2>Регистрация</h2>
-
-        <form id="registerForm">
-
-            <input
-                id="registerName"
-                type="text"
-                placeholder="Ваше имя"
-                required
-            >
-
-            <input
-                id="registerEmail"
-                type="email"
-                placeholder="Email"
-                required
-            >
-
-            <input
-                id="registerPassword"
-                type="password"
-                placeholder="Пароль"
-                required
-            >
-
-            <button type="submit">
-                Зарегистрироваться
-            </button>
-
-        </form>
-
-    </div>
+<div id="loading">
+Проверяем авторизацию...
+</div>
 
 
-    <!-- ВХОД -->
 
-    <div class="block" id="loginBlock">
+<!-- PROFILE -->
 
-        <h2>Вход</h2>
-
-        <form id="loginForm">
-
-            <input
-                id="loginEmail"
-                type="email"
-                placeholder="Email"
-                required
-            >
-
-            <input
-                id="loginPassword"
-                type="password"
-                placeholder="Пароль"
-                required
-            >
-
-            <button type="submit">
-                Войти
-            </button>
-
-        </form>
-
-    </div>
+<div id="profile">
 
 
-    <!-- ЛИЧНЫЙ КАБИНЕТ -->
+<div class="profile-card">
 
-    <div class="block" id="account">
 
-        <h2>Здравствуйте!</h2>
+<!-- GREEN HEADER -->
 
-        <p style="margin-top: 15px;">
-            Имя:
-            <strong id="userName"></strong>
-        </p>
+<div class="profile-top">
 
-        <p style="margin-top: 10px;">
-            Email:
-            <strong id="userEmail"></strong>
-        </p>
 
-        <button id="logoutButton">
-            Выйти
-        </button>
+<div class="avatar" id="avatar">
+?
+</div>
 
-    </div>
+
+<div>
+
+<h2>
+Здравствуйте, <span id="profileName">Пользователь</span>!
+</h2>
+
+<p>
+Ваш личный кабинет клиента
+</p>
+
+</div>
 
 
 </div>
+
+
+
+<!-- CONTENT -->
+
+<div class="profile-content">
+
+
+<!-- INFORMATION -->
+
+<div class="info-grid">
+
+
+<div class="info-item">
+
+<small>
+Имя
+</small>
+
+<strong id="infoName">
+—
+</strong>
+
+</div>
+
+
+<div class="info-item">
+
+<small>
+Email
+</small>
+
+<strong id="infoEmail">
+—
+</strong>
+
+</div>
+
+
+<div class="info-item">
+
+<small>
+Телефон
+</small>
+
+<strong id="infoPhone">
+Не указан
+</strong>
+
+</div>
+
+
+<div class="info-item">
+
+<small>
+Дата регистрации
+</small>
+
+<strong id="infoDate">
+—
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+<div class="divider"></div>
+
+
+
+<!-- EDIT -->
+
+<h3 class="edit-title">
+Редактировать профиль
+</h3>
+
+<p class="edit-description">
+Измените имя или добавьте номер телефона.
+</p>
+
+
+
+<form id="profileForm">
+
+
+<div class="form-group">
+
+<label for="editName">
+Ваше имя
+</label>
+
+<input
+id="editName"
+type="text"
+placeholder="Введите имя"
+required
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label for="editPhone">
+Номер телефона
+</label>
+
+<input
+id="editPhone"
+type="tel"
+placeholder="+7 (999) 123-45-67"
+>
+
+</div>
+
+
+
+<div class="buttons">
+
+<button
+type="submit"
+class="btn btn-primary"
+>
+💾 Сохранить изменения
+</button>
+
+</div>
+
+
+</form>
+
+
+
+<div
+id="message"
+class="message"
+>
+</div>
+
+
+
+<!-- LOGOUT -->
+
+<div class="logout-area">
+
+
+<div class="logout-text">
+
+<strong>
+Вы вошли в аккаунт
+</strong>
+
+<span>
+Ваши данные сохраняются в Supabase
+</span>
+
+</div>
+
+
+<button
+id="logoutButton"
+class="btn btn-green"
+type="button"
+>
+🚪 Выйти
+</button>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</main>
+
 
 
 <script type="module" src="script.js"></script>
