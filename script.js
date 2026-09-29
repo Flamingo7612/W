@@ -9,8 +9,13 @@ import { createClient } from
 const SUPABASE_URL =
     "https://ybburxmftucnvulwhivr.supabase.co";
 
-const SUPABASE_ANON_KEY =
-    "sb_publishable_O55qe_bIpjXjllD1ODWVjA_dnE91yvC"
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_O55qe_bIpjXjllD1ODWVjA_dnE91yvC";
+
+const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
 
 
 const supabase = createClient(
