@@ -9,6 +9,7 @@ import { createClient } from
 const SUPABASE_URL =
     "https://ybburxmftucnvulwhivr.supabase.co";
 
+
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_O55qe_bIpjXjllD1ODWVjA_dnE91yvC";
 
@@ -18,10 +19,6 @@ const supabase = createClient(
     SUPABASE_PUBLISHABLE_KEY
 );
 
-
-// ========================================
-// ПРОВЕРКА SUPABASE
-// ========================================
 
 console.log("Supabase подключён");
 
@@ -38,14 +35,11 @@ if (registerForm) {
 
     registerForm.addEventListener(
         "submit",
-        async function (event) {
+        async function(event) {
 
             event.preventDefault();
 
-            console.log("Начинаем регистрацию...");
 
-
-            // Получаем данные
             const name =
                 document
                     .getElementById("registerName")
@@ -66,11 +60,6 @@ if (registerForm) {
                     .value;
 
 
-            console.log("Имя:", name);
-            console.log("Email:", email);
-
-
-            // Проверка
             if (!name || !email || !password) {
 
                 alert(
@@ -90,10 +79,6 @@ if (registerForm) {
                 return;
             }
 
-
-            // ========================================
-            // СОЗДАЁМ ПОЛЬЗОВАТЕЛЯ
-            // ========================================
 
             const {
                 data,
@@ -116,7 +101,6 @@ if (registerForm) {
                 });
 
 
-            // Выводим ответ в консоль
             console.log(
                 "SIGN UP DATA:",
                 data
@@ -128,16 +112,7 @@ if (registerForm) {
             );
 
 
-            // ========================================
-            // ОШИБКА
-            // ========================================
-
             if (error) {
-
-                console.error(
-                    "Ошибка регистрации:",
-                    error
-                );
 
                 alert(
                     "Ошибка регистрации:\n\n" +
@@ -148,65 +123,35 @@ if (registerForm) {
             }
 
 
-            // ========================================
-            // SUPABASE НЕ ВЕРНУЛ USER
-            // ========================================
-
-            if (
-                !data ||
-                !data.user
-            ) {
-
-                console.error(
-                    "Supabase не вернул пользователя.",
-                    data
-                );
+            if (!data || !data.user) {
 
                 alert(
-                    "Supabase не вернул пользователя.\n\n" +
-                    "Открой Console браузера и посмотри результат."
+                    "Supabase не вернул пользователя."
                 );
 
                 return;
             }
 
 
-            // ========================================
-            // ПОЛЬЗОВАТЕЛЬ СОЗДАН
-            // ========================================
-
-            console.log(
-                "Пользователь создан:",
-                data.user
-            );
-
-
-            // Если подтверждение email включено
             if (!data.session) {
 
                 alert(
                     "Регистрация выполнена!\n\n" +
-                    "Пользователь создан в Supabase.\n\n" +
-                    "Теперь проверь почту и подтверди email."
+                    "Проверьте почту и подтвердите email."
                 );
 
             } else {
 
                 alert(
-                    "Регистрация успешна!\n\n" +
-                    "Добро пожаловать, " +
-                    name +
-                    "!"
+                    "Регистрация успешна!"
                 );
 
             }
 
 
-            // Очищаем форму
             registerForm.reset();
 
 
-            // Показываем аккаунт
             showUser();
 
         }
@@ -227,7 +172,7 @@ if (loginForm) {
 
     loginForm.addEventListener(
         "submit",
-        async function (event) {
+        async function(event) {
 
             event.preventDefault();
 
@@ -255,16 +200,6 @@ if (loginForm) {
             }
 
 
-            console.log(
-                "Попытка входа:",
-                email
-            );
-
-
-            // ========================================
-            // ВХОД
-            // ========================================
-
             const {
                 data,
                 error
@@ -290,11 +225,6 @@ if (loginForm) {
 
 
             if (error) {
-
-                console.error(
-                    "Ошибка входа:",
-                    error
-                );
 
                 alert(
                     "Ошибка входа:\n\n" +
@@ -322,77 +252,16 @@ if (loginForm) {
 
 
 // ========================================
-// ВЫХОД
-// ========================================
-
-const logoutButton =
-    document.getElementById("logoutButton");
-
-
-if (logoutButton) {
-
-    logoutButton.addEventListener(
-        "click",
-        async function () {
-
-
-            const {
-                error
-            } =
-                await supabase.auth.signOut();
-
-
-            if (error) {
-
-                console.error(
-                    "Ошибка выхода:",
-                    error
-                );
-
-                alert(
-                    "Ошибка выхода:\n\n" +
-                    error.message
-                );
-
-                return;
-            }
-
-
-            alert(
-                "Вы вышли из аккаунта."
-            );
-
-
-            showUser();
-
-        }
-    );
-
-}
-
-
-// ========================================
-// ПОКАЗ ПОЛЬЗОВАТЕЛЯ
+// ЛИЧНЫЙ КАБИНЕТ
 // ========================================
 
 async function showUser() {
-
-    console.log(
-        "Проверяем авторизацию..."
-    );
-
 
     const {
         data,
         error
     } =
         await supabase.auth.getUser();
-
-
-    console.log(
-        "CURRENT USER:",
-        data
-    );
 
 
     if (error) {
@@ -411,8 +280,235 @@ async function showUser() {
             : null;
 
 
-    // Элементы страницы
-    const account =
+    // ========================================
+    // ЭЛЕМЕНТЫ ACCOUNT.HTML
+    // ========================================
+
+    const loading =
+        document.getElementById("loading");
+
+
+    const profile =
+        document.getElementById("profile");
+
+
+    // ========================================
+    // ЕСЛИ МЫ НА ACCOUNT.HTML
+    // ========================================
+
+    if (loading && profile) {
+
+        loading.style.display = "none";
+
+
+        if (!user) {
+
+            profile.style.display = "none";
+
+
+            loading.style.display = "block";
+
+
+            loading.innerHTML = `
+                <p style="margin-bottom:15px;">
+                    Вы не вошли в аккаунт.
+                </p>
+
+                <a
+                    href="index.html"
+                    style="
+                        display:inline-flex;
+                        padding:13px 20px;
+                        background:#d62828;
+                        color:white;
+                        border-radius:10px;
+                        font-weight:bold;
+                    "
+                >
+                    Вернуться на сайт
+                </a>
+            `;
+
+            return;
+        }
+
+
+        profile.style.display = "block";
+
+
+        // ========================================
+        // ДАННЫЕ ПОЛЬЗОВАТЕЛЯ
+        // ========================================
+
+        const metadata =
+            user.user_metadata || {};
+
+
+        const name =
+            metadata.name ||
+            "Пользователь";
+
+
+        const phone =
+            metadata.phone ||
+            "";
+
+
+        // ========================================
+        // ИМЯ
+        // ========================================
+
+        const profileName =
+            document.getElementById(
+                "profileName"
+            );
+
+
+        const infoName =
+            document.getElementById(
+                "infoName"
+            );
+
+
+        const editName =
+            document.getElementById(
+                "editName"
+            );
+
+
+        if (profileName) {
+
+            profileName.textContent =
+                name;
+
+        }
+
+
+        if (infoName) {
+
+            infoName.textContent =
+                name;
+
+        }
+
+
+        if (editName) {
+
+            editName.value =
+                name;
+
+        }
+
+
+        // ========================================
+        // EMAIL
+        // ========================================
+
+        const infoEmail =
+            document.getElementById(
+                "infoEmail"
+            );
+
+
+        if (infoEmail) {
+
+            infoEmail.textContent =
+                user.email || "—";
+
+        }
+
+
+        // ========================================
+        // ТЕЛЕФОН
+        // ========================================
+
+        const infoPhone =
+            document.getElementById(
+                "infoPhone"
+            );
+
+
+        const editPhone =
+            document.getElementById(
+                "editPhone"
+            );
+
+
+        if (infoPhone) {
+
+            infoPhone.textContent =
+                phone || "Не указан";
+
+        }
+
+
+        if (editPhone) {
+
+            editPhone.value =
+                phone;
+
+        }
+
+
+        // ========================================
+        // АВАТАР
+        // ========================================
+
+        const avatar =
+            document.getElementById(
+                "avatar"
+            );
+
+
+        if (avatar) {
+
+            avatar.textContent =
+                name
+                    .charAt(0)
+                    .toUpperCase();
+
+        }
+
+
+        // ========================================
+        // ДАТА РЕГИСТРАЦИИ
+        // ========================================
+
+        const infoDate =
+            document.getElementById(
+                "infoDate"
+            );
+
+
+        if (infoDate && user.created_at) {
+
+            const date =
+                new Date(
+                    user.created_at
+                );
+
+
+            infoDate.textContent =
+                date.toLocaleDateString(
+                    "ru-RU",
+                    {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric"
+                    }
+                );
+
+        }
+
+    }
+
+
+    // ========================================
+    // СТАРЫЙ БЛОК ACCOUNT
+    // ДЛЯ СОВМЕСТИМОСТИ
+    // ========================================
+
+    const oldAccount =
         document.getElementById("account");
 
 
@@ -432,28 +528,16 @@ async function showUser() {
         document.getElementById("userEmail");
 
 
-    // ========================================
-    // ЕСЛИ ПОЛЬЗОВАТЕЛЬ ВОШЁЛ
-    // ========================================
-
     if (user) {
 
-        console.log(
-            "Пользователь авторизован:",
-            user.email
-        );
+        if (oldAccount) {
 
-
-        // Показываем кабинет
-        if (account) {
-
-            account.style.display =
+            oldAccount.style.display =
                 "block";
 
         }
 
 
-        // Скрываем вход
         if (loginBlock) {
 
             loginBlock.style.display =
@@ -462,7 +546,6 @@ async function showUser() {
         }
 
 
-        // Скрываем регистрацию
         if (registerBlock) {
 
             registerBlock.style.display =
@@ -471,24 +554,15 @@ async function showUser() {
         }
 
 
-        // Получаем имя
-        const name =
-            user.user_metadata &&
-            user.user_metadata.name
-                ? user.user_metadata.name
-                : "Пользователь";
-
-
-        // Показываем имя
         if (userName) {
 
             userName.textContent =
-                name;
+                user.user_metadata?.name ||
+                "Пользователь";
 
         }
 
 
-        // Показываем email
         if (userEmail) {
 
             userEmail.textContent =
@@ -496,22 +570,11 @@ async function showUser() {
 
         }
 
-    }
+    } else {
 
-    // ========================================
-    // ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ВОШЁЛ
-    // ========================================
+        if (oldAccount) {
 
-    else {
-
-        console.log(
-            "Пользователь не авторизован."
-        );
-
-
-        if (account) {
-
-            account.style.display =
+            oldAccount.style.display =
                 "none";
 
         }
@@ -538,7 +601,211 @@ async function showUser() {
 
 
 // ========================================
-// ПРОВЕРКА ПРИ ОТКРЫТИИ СТРАНИЦЫ
+// СОХРАНЕНИЕ ПРОФИЛЯ
+// ========================================
+
+const profileForm =
+    document.getElementById(
+        "profileForm"
+    );
+
+
+if (profileForm) {
+
+    profileForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document
+                    .getElementById("editName")
+                    .value
+                    .trim();
+
+
+            const phone =
+                document
+                    .getElementById("editPhone")
+                    .value
+                    .trim();
+
+
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+
+            if (!name) {
+
+                showMessage(
+                    "Введите имя.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            console.log(
+                "Сохраняем профиль..."
+            );
+
+
+            const {
+                data,
+                error
+            } =
+                await supabase.auth.updateUser({
+
+                    data: {
+
+                        name: name,
+
+                        phone: phone
+
+                    }
+
+                });
+
+
+            console.log(
+                "UPDATE DATA:",
+                data
+            );
+
+
+            console.log(
+                "UPDATE ERROR:",
+                error
+            );
+
+
+            if (error) {
+
+                console.error(
+                    error
+                );
+
+
+                showMessage(
+                    "Ошибка сохранения: " +
+                    error.message,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            showMessage(
+                "Профиль успешно сохранён!",
+                "success"
+            );
+
+
+            showUser();
+
+        }
+    );
+
+}
+
+
+// ========================================
+// СООБЩЕНИЕ
+// ========================================
+
+function showMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    if (!message) {
+        return;
+    }
+
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        "message " + type;
+
+
+    setTimeout(
+        function() {
+
+            message.className =
+                "message";
+
+        },
+        4000
+    );
+
+}
+
+
+// ========================================
+// ВЫХОД
+// ========================================
+
+const logoutButton =
+    document.getElementById(
+        "logoutButton"
+    );
+
+
+if (logoutButton) {
+
+    logoutButton.addEventListener(
+        "click",
+        async function() {
+
+
+            const {
+                error
+            } =
+                await supabase.auth.signOut();
+
+
+            if (error) {
+
+                alert(
+                    "Ошибка выхода:\n\n" +
+                    error.message
+                );
+
+                return;
+            }
+
+
+            alert(
+                "Вы вышли из аккаунта."
+            );
+
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+}
+
+
+// ========================================
+// ПРОВЕРКА ПРИ ЗАПУСКЕ
 // ========================================
 
 showUser();
@@ -549,12 +816,13 @@ showUser();
 // ========================================
 
 supabase.auth.onAuthStateChange(
-    function (event, session) {
+    function(event, session) {
 
         console.log(
             "AUTH EVENT:",
             event
         );
+
 
         console.log(
             "SESSION:",
