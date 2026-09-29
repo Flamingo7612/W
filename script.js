@@ -48,6 +48,7 @@ if (registerForm) {
             const message =
                 document.getElementById("registerMessage");
 
+
             const { data, error } =
                 await supabase.auth.signUp({
 
@@ -291,6 +292,10 @@ async function showUser() {
 
     profile.style.display =
         "block";
+
+
+    // Загружаем заказы пользователя
+    await loadOrders(user.id);
 }
 
 
@@ -556,7 +561,7 @@ setupPhoneMask(
 
 
 // ==========================================
-// ОТПРАВКА ЗАКАЗА В TELEGRAM
+// СОЗДАНИЕ ЗАКАЗА
 // ==========================================
 
 const orderForm =
@@ -608,7 +613,8 @@ if (orderForm) {
                 )?.value.trim();
 
 
-            // Получаем текущего пользователя
+            // Получаем пользователя
+
             const {
                 data: {
                     session
@@ -644,18 +650,77 @@ if (orderForm) {
 
 
             // Блокируем кнопку
+
             button.disabled =
                 true;
 
             button.textContent =
-                "⏳ Отправляем...";
-
+                "⏳ Сохраняем заказ...";
 
             message.style.display =
                 "none";
 
 
             try {
+
+                // ==================================
+                // 1. СОХРАНЯЕМ ЗАКАЗ В SUPABASE
+                // ==================================
+
+                const {
+                    data: order,
+                    error: insertError
+                } =
+                    await supabase
+                        .from("orders")
+                        .insert({
+
+                            user_id:
+                                user.id,
+
+                            name:
+                                name,
+
+                            email:
+                                email,
+
+                            phone:
+                                phone || null,
+
+                            service:
+                                service,
+
+                            description:
+                                description || null,
+
+                            preferred_date:
+                                date || null
+
+                        })
+                        .select()
+                        .single();
+
+
+                if (insertError) {
+
+                    throw insertError;
+
+                }
+
+
+                console.log(
+                    "Заказ сохранён:",
+                    order
+                );
+
+
+                // ==================================
+                // 2. ОТПРАВЛЯЕМ ЗАКАЗ В TELEGRAM
+                // ==================================
+
+                button.textContent =
+                    "📱 Отправляем в Telegram...";
+
 
                 const {
                     data,
@@ -667,17 +732,26 @@ if (orderForm) {
 
                             body: {
 
-                                name: name,
+                                order_id:
+                                    order.id,
 
-                                email: email,
+                                name:
+                                    name,
 
-                                phone: phone,
+                                email:
+                                    email,
 
-                                service: service,
+                                phone:
+                                    phone,
 
-                                description: description,
+                                service:
+                                    service,
 
-                                preferred_date: date
+                                description:
+                                    description,
+
+                                preferred_date:
+                                    date
 
                             }
 
@@ -686,7 +760,9 @@ if (orderForm) {
 
 
                 if (error) {
+
                     throw error;
+
                 }
 
 
@@ -697,14 +773,18 @@ if (orderForm) {
 
                     throw new Error(
                         data?.error ||
-                        "Не удалось отправить заказ"
+                        "Telegram не подтвердил отправку"
                     );
 
                 }
 
 
+                // ==================================
+                // 3. УСПЕХ
+                // ==================================
+
                 message.textContent =
-                    "✅ Заказ успешно отправлен! Мы свяжемся с вами.";
+                    `✅ Заказ №${order.id} успешно отправлен! Мы свяжемся с вами.`;
 
                 message.className =
                     "success";
@@ -713,7 +793,8 @@ if (orderForm) {
                 orderForm.reset();
 
 
-                // После reset снова подставляем телефон
+                // Возвращаем телефон
+
                 if (phone) {
 
                     document.getElementById(
@@ -721,6 +802,11 @@ if (orderForm) {
                     ).value = phone;
 
                 }
+
+
+                // Обновляем список заказов
+
+                await loadOrders(user.id);
 
 
             } catch (error) {
@@ -732,7 +818,7 @@ if (orderForm) {
 
 
                 message.textContent =
-                    "❌ Не удалось отправить заказ. Попробуйте ещё раз.";
+                    "❌ Не удалось отправить заказ. Проверьте подключение и попробуйте ещё раз.";
 
                 message.className =
                     "error";
@@ -748,5 +834,248 @@ if (orderForm) {
 
         }
     );
+
+}
+
+
+// ==========================================
+// ЗАГРУЗКА МОИХ ЗАКАЗОВ
+// ==========================================
+
+async function loadOrders(userId) {
+
+    const ordersList =
+        document.getElementById(
+            "ordersList"
+        );
+
+
+    // Если блока ещё нет в account.html,
+    // просто ничего не делаем.
+
+    if (!ordersList) {
+        return;
+    }
+
+
+    ordersList.innerHTML =
+        "<p>⏳ Загружаем заказы...</p>";
+
+
+    const {
+        data: orders,
+        error
+    } =
+        await supabase
+            .from("orders")
+            .select("*")
+            .eq("user_id", userId)
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Ошибка загрузки заказов:",
+            error
+        );
+
+        ordersList.innerHTML =
+            "<p>❌ Не удалось загрузить заказы.</p>";
+
+        return;
+    }
+
+
+    if (!orders || orders.length === 0) {
+
+        ordersList.innerHTML = `
+            <div class="empty-orders">
+                <div style="font-size:40px;">
+                    📦
+                </div>
+
+                <p>
+                    У вас пока нет заказов.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    ordersList.innerHTML =
+        orders.map(
+            function(order) {
+
+                const createdDate =
+                    new Date(
+                        order.created_at
+                    ).toLocaleDateString(
+                        "ru-RU"
+                    );
+
+
+                let statusClass =
+                    "status-new";
+
+
+                if (
+                    order.status ===
+                    "В работе"
+                ) {
+
+                    statusClass =
+                        "status-work";
+
+                }
+
+
+                if (
+                    order.status ===
+                    "Выполнен"
+                ) {
+
+                    statusClass =
+                        "status-done";
+
+                }
+
+
+                if (
+                    order.status ===
+                    "Отменён"
+                ) {
+
+                    statusClass =
+                        "status-cancel";
+
+                }
+
+
+                return `
+                    <div class="order-history-card">
+
+                        <div class="order-history-top">
+
+                            <strong>
+                                Заказ №${order.id}
+                            </strong>
+
+                            <span class="${statusClass}">
+                                ${getStatusIcon(order.status)}
+                                ${order.status}
+                            </span>
+
+                        </div>
+
+
+                        <div class="order-history-service">
+                            🔧 ${escapeHtml(order.service)}
+                        </div>
+
+
+                        <div class="order-history-date">
+                            📅 Желаемая дата:
+                            ${order.preferred_date
+                                ? escapeHtml(formatDate(order.preferred_date))
+                                : "Не указана"}
+                        </div>
+
+
+                        <div class="order-history-created">
+                            🕒 Создан:
+                            ${createdDate}
+                        </div>
+
+
+                        ${
+                            order.description
+                                ? `
+                                    <div class="order-history-description">
+                                        📝 ${escapeHtml(order.description)}
+                                    </div>
+                                  `
+                                : ""
+                        }
+
+                    </div>
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+// ==========================================
+// ИКОНКА СТАТУСА
+// ==========================================
+
+function getStatusIcon(status) {
+
+    switch (status) {
+
+        case "В работе":
+            return "🔵";
+
+        case "Выполнен":
+            return "🟢";
+
+        case "Отменён":
+            return "🔴";
+
+        default:
+            return "🟡";
+
+    }
+
+}
+
+
+// ==========================================
+// ФОРМАТ ДАТЫ
+// ==========================================
+
+function formatDate(date) {
+
+    const parts =
+        date.split("-");
+
+
+    if (parts.length !== 3) {
+        return date;
+    }
+
+
+    return (
+        parts[2] +
+        "." +
+        parts[1] +
+        "." +
+        parts[0]
+    );
+
+}
+
+
+// ==========================================
+// ЗАЩИТА ОТ HTML
+// ==========================================
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
