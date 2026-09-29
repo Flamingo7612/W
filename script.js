@@ -1,10 +1,10 @@
-import { createClient } from
-    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
-
 // ========================================
 // SUPABASE
 // ========================================
+
+import { createClient } from
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
 
 const SUPABASE_URL =
     "https://ybburxmftucnvulwhivr.supabase.co";
@@ -12,16 +12,18 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_O55qe_bIpjXjllD1ODWVjA_dnE91yvC";
 
+
 const supabase = createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
 );
 
 
-const supabase = createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
+// ========================================
+// ПРОВЕРКА SUPABASE
+// ========================================
+
+console.log("Supabase подключён");
 
 
 // ========================================
@@ -31,117 +33,184 @@ const supabase = createClient(
 const registerForm =
     document.getElementById("registerForm");
 
+
 if (registerForm) {
 
-    registerForm.addEventListener("submit", async (event) => {
+    registerForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const name =
-            document.getElementById("registerName").value.trim();
+            console.log("Начинаем регистрацию...");
 
-        const email =
-            document.getElementById("registerEmail").value.trim();
 
-        const password =
-            document.getElementById("registerPassword").value;
+            // Получаем данные
+            const name =
+                document
+                    .getElementById("registerName")
+                    .value
+                    .trim();
 
-        if (!name || !email || !password) {
-            alert("Заполни все поля");
-            return;
-        }
 
-        if (password.length < 6) {
-            alert("Пароль должен быть минимум 6 символов");
-            return;
-        }
+            const email =
+                document
+                    .getElementById("registerEmail")
+                    .value
+                    .trim();
 
-       const { data, error } =
-    await supabase.auth.signUp({
-        email: email,
-        password: password,
 
-        options: {
-            data: {
-                name: name
+            const password =
+                document
+                    .getElementById("registerPassword")
+                    .value;
+
+
+            console.log("Имя:", name);
+            console.log("Email:", email);
+
+
+            // Проверка
+            if (!name || !email || !password) {
+
+                alert(
+                    "Заполни все поля."
+                );
+
+                return;
             }
-        }
-    });
 
-console.log("SIGN UP DATA:", data);
-console.log("SIGN UP ERROR:", error);
 
-if (error) {
-    console.error(error);
+            if (password.length < 6) {
 
-    alert(
-        "Ошибка регистрации:\n" +
-        error.message
-    );
+                alert(
+                    "Пароль должен содержать минимум 6 символов."
+                );
 
-    return;
-}
+                return;
+            }
 
-if (!data || !data.user) {
 
-    alert(
-        "Supabase не создал пользователя.\n\n" +
-        "Открой консоль браузера и посмотри результат."
-    );
+            // ========================================
+            // СОЗДАЁМ ПОЛЬЗОВАТЕЛЯ
+            // ========================================
 
-    return;
-}
+            const {
+                data,
+                error
+            } =
+                await supabase.auth.signUp({
 
-if (!data.session) {
+                    email: email,
 
-    alert(
-        "Пользователь создан!\n\n" +
-        "Теперь подтверди email через письмо."
-    );
+                    password: password,
 
-} else {
+                    options: {
 
-    alert(
-        "Регистрация успешна!"
-    );
-}
+                        data: {
+                            name: name
+                        }
 
-registerForm.reset();
-
-                email: email,
-                password: password,
-
-                options: {
-                    data: {
-                        name: name
                     }
-                }
 
-            });
+                });
 
 
-        if (error) {
-
-            console.error(error);
-
-            alert(
-                "Ошибка регистрации:\n" +
-                error.message
+            // Выводим ответ в консоль
+            console.log(
+                "SIGN UP DATA:",
+                data
             );
 
-            return;
+            console.log(
+                "SIGN UP ERROR:",
+                error
+            );
+
+
+            // ========================================
+            // ОШИБКА
+            // ========================================
+
+            if (error) {
+
+                console.error(
+                    "Ошибка регистрации:",
+                    error
+                );
+
+                alert(
+                    "Ошибка регистрации:\n\n" +
+                    error.message
+                );
+
+                return;
+            }
+
+
+            // ========================================
+            // SUPABASE НЕ ВЕРНУЛ USER
+            // ========================================
+
+            if (
+                !data ||
+                !data.user
+            ) {
+
+                console.error(
+                    "Supabase не вернул пользователя.",
+                    data
+                );
+
+                alert(
+                    "Supabase не вернул пользователя.\n\n" +
+                    "Открой Console браузера и посмотри результат."
+                );
+
+                return;
+            }
+
+
+            // ========================================
+            // ПОЛЬЗОВАТЕЛЬ СОЗДАН
+            // ========================================
+
+            console.log(
+                "Пользователь создан:",
+                data.user
+            );
+
+
+            // Если подтверждение email включено
+            if (!data.session) {
+
+                alert(
+                    "Регистрация выполнена!\n\n" +
+                    "Пользователь создан в Supabase.\n\n" +
+                    "Теперь проверь почту и подтверди email."
+                );
+
+            } else {
+
+                alert(
+                    "Регистрация успешна!\n\n" +
+                    "Добро пожаловать, " +
+                    name +
+                    "!"
+                );
+
+            }
+
+
+            // Очищаем форму
+            registerForm.reset();
+
+
+            // Показываем аккаунт
+            showUser();
+
         }
-
-
-        alert(
-            "Регистрация выполнена!\n\n" +
-            "Если требуется подтверждение email, " +
-            "проверь почту."
-        );
-
-        registerForm.reset();
-
-    });
+    );
 
 }
 
@@ -153,48 +222,101 @@ registerForm.reset();
 const loginForm =
     document.getElementById("loginForm");
 
+
 if (loginForm) {
 
-    loginForm.addEventListener("submit", async (event) => {
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
-
-        const email =
-            document.getElementById("loginEmail").value.trim();
-
-        const password =
-            document.getElementById("loginPassword").value;
+            event.preventDefault();
 
 
-        const { data, error } =
-            await supabase.auth.signInWithPassword({
-
-                email: email,
-                password: password
-
-            });
+            const email =
+                document
+                    .getElementById("loginEmail")
+                    .value
+                    .trim();
 
 
-        if (error) {
+            const password =
+                document
+                    .getElementById("loginPassword")
+                    .value;
 
-            console.error(error);
 
-            alert(
-                "Ошибка входа:\n" +
-                error.message
+            if (!email || !password) {
+
+                alert(
+                    "Заполни email и пароль."
+                );
+
+                return;
+            }
+
+
+            console.log(
+                "Попытка входа:",
+                email
             );
 
-            return;
+
+            // ========================================
+            // ВХОД
+            // ========================================
+
+            const {
+                data,
+                error
+            } =
+                await supabase.auth.signInWithPassword({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+
+            console.log(
+                "LOGIN DATA:",
+                data
+            );
+
+            console.log(
+                "LOGIN ERROR:",
+                error
+            );
+
+
+            if (error) {
+
+                console.error(
+                    "Ошибка входа:",
+                    error
+                );
+
+                alert(
+                    "Ошибка входа:\n\n" +
+                    error.message
+                );
+
+                return;
+            }
+
+
+            alert(
+                "Вы успешно вошли!"
+            );
+
+
+            loginForm.reset();
+
+
+            showUser();
+
         }
-
-
-        alert("Вы успешно вошли!");
-
-        loginForm.reset();
-
-        showUser();
-
-    });
+    );
 
 }
 
@@ -206,30 +328,45 @@ if (loginForm) {
 const logoutButton =
     document.getElementById("logoutButton");
 
+
 if (logoutButton) {
 
-    logoutButton.addEventListener("click", async () => {
+    logoutButton.addEventListener(
+        "click",
+        async function () {
 
-        const { error } =
-            await supabase.auth.signOut();
+
+            const {
+                error
+            } =
+                await supabase.auth.signOut();
 
 
-        if (error) {
+            if (error) {
+
+                console.error(
+                    "Ошибка выхода:",
+                    error
+                );
+
+                alert(
+                    "Ошибка выхода:\n\n" +
+                    error.message
+                );
+
+                return;
+            }
+
 
             alert(
-                "Ошибка выхода:\n" +
-                error.message
+                "Вы вышли из аккаунта."
             );
 
-            return;
+
+            showUser();
+
         }
-
-
-        alert("Вы вышли из аккаунта");
-
-        showUser();
-
-    });
+    );
 
 }
 
@@ -240,70 +377,159 @@ if (logoutButton) {
 
 async function showUser() {
 
+    console.log(
+        "Проверяем авторизацию..."
+    );
+
+
     const {
-        data: {
-            user
-        }
-    } = await supabase.auth.getUser();
+        data,
+        error
+    } =
+        await supabase.auth.getUser();
 
 
+    console.log(
+        "CURRENT USER:",
+        data
+    );
+
+
+    if (error) {
+
+        console.error(
+            "Ошибка получения пользователя:",
+            error
+        );
+
+    }
+
+
+    const user =
+        data
+            ? data.user
+            : null;
+
+
+    // Элементы страницы
     const account =
         document.getElementById("account");
 
+
     const loginBlock =
         document.getElementById("loginBlock");
+
 
     const registerBlock =
         document.getElementById("registerBlock");
 
 
+    const userName =
+        document.getElementById("userName");
+
+
+    const userEmail =
+        document.getElementById("userEmail");
+
+
+    // ========================================
+    // ЕСЛИ ПОЛЬЗОВАТЕЛЬ ВОШЁЛ
+    // ========================================
+
     if (user) {
 
+        console.log(
+            "Пользователь авторизован:",
+            user.email
+        );
+
+
+        // Показываем кабинет
         if (account) {
-            account.style.display = "block";
+
+            account.style.display =
+                "block";
+
         }
 
+
+        // Скрываем вход
         if (loginBlock) {
-            loginBlock.style.display = "none";
+
+            loginBlock.style.display =
+                "none";
+
         }
 
+
+        // Скрываем регистрацию
         if (registerBlock) {
-            registerBlock.style.display = "none";
+
+            registerBlock.style.display =
+                "none";
+
         }
 
 
+        // Получаем имя
         const name =
-            user.user_metadata?.name ||
-            "Пользователь";
+            user.user_metadata &&
+            user.user_metadata.name
+                ? user.user_metadata.name
+                : "Пользователь";
 
 
-        const userName =
-            document.getElementById("userName");
-
-        const userEmail =
-            document.getElementById("userEmail");
-
-
+        // Показываем имя
         if (userName) {
-            userName.textContent = name;
+
+            userName.textContent =
+                name;
+
         }
 
+
+        // Показываем email
         if (userEmail) {
-            userEmail.textContent = user.email;
+
+            userEmail.textContent =
+                user.email || "";
+
         }
 
-    } else {
+    }
+
+    // ========================================
+    // ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ВОШЁЛ
+    // ========================================
+
+    else {
+
+        console.log(
+            "Пользователь не авторизован."
+        );
+
 
         if (account) {
-            account.style.display = "none";
+
+            account.style.display =
+                "none";
+
         }
+
 
         if (loginBlock) {
-            loginBlock.style.display = "block";
+
+            loginBlock.style.display =
+                "block";
+
         }
 
+
         if (registerBlock) {
-            registerBlock.style.display = "block";
+
+            registerBlock.style.display =
+                "block";
+
         }
 
     }
@@ -312,7 +538,7 @@ async function showUser() {
 
 
 // ========================================
-// ПРОВЕРКА ПРИ ОТКРЫТИИ
+// ПРОВЕРКА ПРИ ОТКРЫТИИ СТРАНИЦЫ
 // ========================================
 
 showUser();
@@ -322,8 +548,21 @@ showUser();
 // ОТСЛЕЖИВАНИЕ АВТОРИЗАЦИИ
 // ========================================
 
-supabase.auth.onAuthStateChange(() => {
+supabase.auth.onAuthStateChange(
+    function (event, session) {
 
-    showUser();
+        console.log(
+            "AUTH EVENT:",
+            event
+        );
 
-});
+        console.log(
+            "SESSION:",
+            session
+        );
+
+
+        showUser();
+
+    }
+);
