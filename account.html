@@ -1,1085 +1,1493 @@
-import { createClient } from
-    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+<!DOCTYPE html>
+<html lang="ru">
 
+<head>
 
-// ==========================================
-// SUPABASE
-// ==========================================
+<meta charset="UTF-8">
 
-const SUPABASE_URL =
-    "https://ybburxmftucnvulwhivr.supabase.co";
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-const SUPABASE_KEY =
-    "sb_publishable_O55qe_bIpjXjllD1ODWVjA_dnE91yvC";
+<meta name="description"
+      content="Личный кабинет клиента — Сварочная мастерская">
 
-const supabase = createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+<title>Личный кабинет — Сварочная мастерская</title>
 
+<style>
 
-// ==========================================
-// РЕГИСТРАЦИЯ
-// ==========================================
+/* ============================= */
+/* VARIABLES */
+/* ============================= */
 
-const registerForm =
-    document.getElementById("registerForm");
+:root{
 
-if (registerForm) {
+    --green:#123d2a;
+    --green2:#1d5a3d;
+    --red:#d62828;
 
-    registerForm.addEventListener(
-        "submit",
-        async function(event) {
+    --bg:#f7faf8;
+    --light:#e8f1eb;
 
-            event.preventDefault();
+    --text:#17231b;
+    --muted:#617066;
 
-            const name =
-                document.getElementById("registerName")?.value.trim();
+    --white:#fff;
+    --border:#d7e3da;
 
-            const email =
-                document.getElementById("registerEmail")?.value.trim();
+    --shadow:0 15px 40px rgba(18,61,42,.12);
 
-            const password =
-                document.getElementById("registerPassword")?.value;
-
-            const phone =
-                document.getElementById("registerPhone")?.value.trim();
-
-            const message =
-                document.getElementById("registerMessage");
-
-
-            const { error } =
-                await supabase.auth.signUp({
-
-                    email: email,
-
-                    password: password,
-
-                    options: {
-                        data: {
-                            name: name,
-                            phone: phone
-                        }
-                    }
-
-                });
-
-
-            if (error) {
-
-                if (message) {
-
-                    message.textContent =
-                        "Ошибка: " + error.message;
-
-                    message.className =
-                        "message error";
-
-                    message.style.display =
-                        "block";
-
-                }
-
-                return;
-            }
-
-
-            if (message) {
-
-                message.textContent =
-                    "Регистрация успешна! Проверьте вашу почту.";
-
-                message.className =
-                    "message success";
-
-                message.style.display =
-                    "block";
-
-            }
-
-        }
-    );
+    --radius:18px;
 
 }
 
 
-// ==========================================
-// ВХОД
-// ==========================================
+/* ============================= */
+/* RESET */
+/* ============================= */
 
-const loginForm =
-    document.getElementById("loginForm");
+*{
 
-if (loginForm) {
+    margin:0;
+    padding:0;
 
-    loginForm.addEventListener(
-        "submit",
-        async function(event) {
-
-            event.preventDefault();
-
-            const email =
-                document.getElementById("loginEmail")?.value.trim();
-
-            const password =
-                document.getElementById("loginPassword")?.value;
-
-            const message =
-                document.getElementById("loginMessage");
-
-
-            const { error } =
-                await supabase.auth.signInWithPassword({
-
-                    email: email,
-
-                    password: password
-
-                });
-
-
-            if (error) {
-
-                if (message) {
-
-                    message.textContent =
-                        "Ошибка: " + error.message;
-
-                    message.className =
-                        "message error";
-
-                    message.style.display =
-                        "block";
-
-                }
-
-                return;
-            }
-
-
-            window.location.href =
-                "account.html";
-
-        }
-    );
+    box-sizing:border-box;
 
 }
 
 
-// ==========================================
-// ЛИЧНЫЙ КАБИНЕТ
-// ==========================================
+html{
 
-async function showUser() {
-
-    const loading =
-        document.getElementById("loading");
-
-    const profile =
-        document.getElementById("profile");
-
-
-    if (!loading || !profile) {
-        return;
-    }
-
-
-    const {
-        data: {
-            session
-        }
-    } = await supabase.auth.getSession();
-
-
-    if (!session) {
-
-        loading.innerHTML = `
-            <div class="message error"
-                 style="display:block">
-
-                Вы не вошли в аккаунт.
-
-                <br><br>
-
-                <a href="index.html">
-                    Вернуться на главную
-                </a>
-
-            </div>
-        `;
-
-        return;
-    }
-
-
-    const user =
-        session.user;
-
-
-    const name =
-        user.user_metadata?.name ||
-        "Пользователь";
-
-
-    const phone =
-        user.user_metadata?.phone ||
-        "Не указан";
-
-
-    const email =
-        user.email ||
-        "Не указан";
-
-
-    const date =
-        user.created_at
-            ? new Date(user.created_at)
-                .toLocaleDateString("ru-RU")
-            : "—";
-
-
-    const profileName =
-        document.getElementById("profileName");
-
-    const infoName =
-        document.getElementById("infoName");
-
-    const infoEmail =
-        document.getElementById("infoEmail");
-
-    const infoPhone =
-        document.getElementById("infoPhone");
-
-    const infoDate =
-        document.getElementById("infoDate");
-
-    const avatar =
-        document.getElementById("avatar");
-
-    const editName =
-        document.getElementById("editName");
-
-    const editPhone =
-        document.getElementById("editPhone");
-
-    const orderPhone =
-        document.getElementById("orderPhone");
-
-
-    if (profileName)
-        profileName.textContent = name;
-
-    if (infoName)
-        infoName.textContent = name;
-
-    if (infoEmail)
-        infoEmail.textContent = email;
-
-    if (infoPhone)
-        infoPhone.textContent = phone;
-
-    if (infoDate)
-        infoDate.textContent = date;
-
-    if (avatar)
-        avatar.textContent =
-            name.charAt(0).toUpperCase();
-
-    if (editName)
-        editName.value = name;
-
-    if (editPhone && phone !== "Не указан")
-        editPhone.value = phone;
-
-    if (orderPhone && phone !== "Не указан")
-        orderPhone.value = phone;
-
-
-    loading.style.display =
-        "none";
-
-    profile.style.display =
-        "block";
-
-
-    await loadOrders(user.id);
-}
-
-
-showUser();
-
-
-// ==========================================
-// СОХРАНЕНИЕ ПРОФИЛЯ
-// ==========================================
-
-const profileForm =
-    document.getElementById("profileForm");
-
-if (profileForm) {
-
-    profileForm.addEventListener(
-        "submit",
-        async function(event) {
-
-            event.preventDefault();
-
-
-            const name =
-                document.getElementById("editName")
-                    ?.value.trim();
-
-
-            const phone =
-                document.getElementById("editPhone")
-                    ?.value.trim();
-
-
-            const message =
-                document.getElementById("message");
-
-
-            const {
-                error
-            } = await supabase.auth.updateUser({
-
-                data: {
-                    name: name,
-                    phone: phone
-                }
-
-            });
-
-
-            if (error) {
-
-                if (message) {
-
-                    message.textContent =
-                        "Ошибка: " + error.message;
-
-                    message.className =
-                        "message error";
-
-                    message.style.display =
-                        "block";
-
-                }
-
-                return;
-            }
-
-
-            if (message) {
-
-                message.textContent =
-                    "Профиль успешно сохранён!";
-
-                message.className =
-                    "message success";
-
-                message.style.display =
-                    "block";
-
-            }
-
-
-            await showUser();
-
-        }
-    );
+    scroll-behavior:smooth;
 
 }
 
 
-// ==========================================
-// ВЫХОД
-// ==========================================
+body{
 
-const logoutButton =
-    document.getElementById("logoutButton");
+    font-family:Arial,sans-serif;
 
-if (logoutButton) {
+    background:var(--bg);
 
-    logoutButton.addEventListener(
-        "click",
-        async function() {
+    color:var(--text);
 
-            await supabase.auth.signOut();
-
-            window.location.href =
-                "index.html";
-
-        }
-    );
+    line-height:1.5;
 
 }
 
 
-// ==========================================
-// МАСКА ТЕЛЕФОНА
-// ==========================================
+a{
 
-function setupPhoneMask(input) {
+    text-decoration:none;
 
-    if (!input) {
-        return;
-    }
-
-
-    function formatPhone(value) {
-
-        let digits =
-            value.replace(/\D/g, "");
-
-
-        if (digits.startsWith("8")) {
-
-            digits =
-                "7" + digits.substring(1);
-
-        }
-
-
-        if (!digits.startsWith("7")) {
-
-            digits =
-                "7" + digits;
-
-        }
-
-
-        digits =
-            digits.substring(0, 11);
-
-
-        const number =
-            digits.substring(1);
-
-
-        let result =
-            "+7";
-
-
-        if (number.length > 0) {
-
-            result +=
-                " (" +
-                number.substring(0, 3);
-
-        }
-
-
-        if (number.length >= 3) {
-
-            result += ")";
-
-        }
-
-
-        if (number.length > 3) {
-
-            result +=
-                " " +
-                number.substring(3, 6);
-
-        }
-
-
-        if (number.length > 6) {
-
-            result +=
-                "-" +
-                number.substring(6, 8);
-
-        }
-
-
-        if (number.length > 8) {
-
-            result +=
-                "-" +
-                number.substring(8, 10);
-
-        }
-
-
-        return result;
-    }
-
-
-    input.addEventListener(
-        "focus",
-        function() {
-
-            if (input.value === "") {
-
-                input.value =
-                    "+7 ";
-
-            }
-
-        }
-    );
-
-
-    input.addEventListener(
-        "input",
-        function() {
-
-            input.value =
-                formatPhone(input.value);
-
-        }
-    );
-
-
-    input.addEventListener(
-        "paste",
-        function() {
-
-            setTimeout(
-                function() {
-
-                    input.value =
-                        formatPhone(input.value);
-
-                },
-                0
-            );
-
-        }
-    );
-
-
-    if (input.value) {
-
-        input.value =
-            formatPhone(input.value);
-
-    }
+    color:inherit;
 
 }
 
 
-setupPhoneMask(
-    document.getElementById("editPhone")
-);
+/* ============================= */
+/* HEADER */
+/* ============================= */
 
-setupPhoneMask(
-    document.getElementById("orderPhone")
-);
+header{
 
+    position:fixed;
 
-// ==========================================
-// СОЗДАНИЕ И ОТПРАВКА ЗАКАЗА
-// ==========================================
+    top:0;
+    left:0;
 
-const orderForm =
-    document.getElementById("orderForm");
+    width:100%;
 
+    height:70px;
 
-if (orderForm) {
+    background:rgba(18,61,42,.96);
 
-    orderForm.addEventListener(
-        "submit",
-        async function(event) {
+    backdrop-filter:blur(10px);
 
-            event.preventDefault();
+    z-index:1000;
 
-
-            const button =
-                orderForm.querySelector(
-                    ".order-button"
-                );
-
-
-            const message =
-                document.getElementById(
-                    "orderMessage"
-                );
-
-
-            const service =
-                document.getElementById(
-                    "orderService"
-                )?.value;
-
-
-            const phone =
-                document.getElementById(
-                    "orderPhone"
-                )?.value.trim();
-
-
-            const date =
-                document.getElementById(
-                    "orderDate"
-                )?.value;
-
-
-            const description =
-                document.getElementById(
-                    "orderDescription"
-                )?.value.trim();
-
-
-            const {
-                data: {
-                    session
-                }
-            } =
-                await supabase.auth.getSession();
-
-
-            if (!session) {
-
-                message.textContent =
-                    "Сначала войдите в личный кабинет.";
-
-                message.className =
-                    "error";
-
-                message.style.display =
-                    "block";
-
-                return;
-            }
-
-
-            const user =
-                session.user;
-
-
-            const name =
-                user.user_metadata?.name ||
-                "Не указан";
-
-
-            const email =
-                user.email ||
-                "Не указан";
-
-
-            button.disabled =
-                true;
-
-            button.textContent =
-                "⏳ Сохраняем заказ...";
-
-
-            message.textContent =
-                "";
-
-            message.style.display =
-                "none";
-
-
-            try {
-
-                // ==================================
-                // СОХРАНЯЕМ ЗАКАЗ
-                // ==================================
-
-                const {
-                    data: order,
-                    error: insertError
-                } =
-                    await supabase
-                        .from("orders")
-                        .insert({
-
-                            user_id:
-                                user.id,
-
-                            name:
-                                name,
-
-                            email:
-                                email,
-
-                            phone:
-                                phone || null,
-
-                            service:
-                                service,
-
-                            description:
-                                description || null,
-
-                            preferred_date:
-                                date || null
-
-                        })
-                        .select()
-                        .single();
-
-
-                if (insertError) {
-                    throw insertError;
-                }
-
-
-                // ==================================
-                // TELEGRAM
-                // ==================================
-
-                button.textContent =
-                    "📱 Отправляем...";
-
-
-                const {
-                    error: telegramError
-                } =
-                    await supabase.functions.invoke(
-                        "send-order",
-                        {
-
-                            body: {
-
-                                order_id:
-                                    order.id,
-
-                                name:
-                                    name,
-
-                                email:
-                                    email,
-
-                                phone:
-                                    phone,
-
-                                service:
-                                    service,
-
-                                description:
-                                    description,
-
-                                preferred_date:
-                                    date
-
-                            }
-
-                        }
-                    );
-
-
-                if (telegramError) {
-                    throw telegramError;
-                }
-
-
-                // ==================================
-                // УСПЕШНО
-                // ==================================
-
-                message.textContent =
-                    `✅ Заказ №${order.id} успешно отправлен! Мы свяжемся с вами.`;
-
-                message.className =
-                    "success";
-
-                message.style.display =
-                    "block";
-
-                message.hidden =
-                    false;
-
-
-                orderForm.reset();
-
-
-                if (phone) {
-
-                    const orderPhoneInput =
-                        document.getElementById(
-                            "orderPhone"
-                        );
-
-                    if (orderPhoneInput) {
-                        orderPhoneInput.value =
-                            phone;
-                    }
-
-                }
-
-
-                await loadOrders(user.id);
-
-
-            } catch (error) {
-
-                console.error(
-                    "Ошибка заказа:",
-                    error
-                );
-
-
-                message.textContent =
-                    "❌ Не удалось отправить заказ. Попробуйте ещё раз.";
-
-                message.className =
-                    "error";
-
-                message.style.display =
-                    "block";
-
-                message.hidden =
-                    false;
-
-            }
-
-
-            button.disabled =
-                false;
-
-            button.textContent =
-                "📩 Отправить заказ";
-
-        }
-    );
+    border-bottom:
+        1px solid rgba(255,255,255,.1);
 
 }
 
 
-// ==========================================
-// МОИ ЗАКАЗЫ
-// ==========================================
+.header-inner{
 
-async function loadOrders(userId) {
+    height:100%;
 
-    const ordersList =
-        document.getElementById(
-            "ordersList"
-        );
+    width:min(1180px,calc(100% - 40px));
 
+    margin:auto;
 
-    if (!ordersList) {
-        return;
-    }
+    display:flex;
 
+    align-items:center;
 
-    ordersList.innerHTML =
-        "<p>⏳ Загружаем заказы...</p>";
-
-
-    const {
-        data: orders,
-        error
-    } =
-        await supabase
-            .from("orders")
-            .select("*")
-            .eq("user_id", userId)
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Ошибка загрузки заказов:",
-            error
-        );
-
-        ordersList.innerHTML =
-            "<p>❌ Не удалось загрузить заказы.</p>";
-
-        return;
-    }
-
-
-    if (!orders || orders.length === 0) {
-
-        ordersList.innerHTML = `
-            <div class="empty-orders">
-                <div style="font-size:40px;">
-                    📦
-                </div>
-
-                <p>
-                    У вас пока нет заказов.
-                </p>
-            </div>
-        `;
-
-        return;
-    }
-
-
-    ordersList.innerHTML =
-        orders.map(
-            function(order) {
-
-                const createdDate =
-                    new Date(
-                        order.created_at
-                    ).toLocaleDateString(
-                        "ru-RU"
-                    );
-
-
-                let statusClass =
-                    "status-new";
-
-
-                if (
-                    order.status ===
-                    "В работе"
-                ) {
-                    statusClass =
-                        "status-work";
-                }
-
-
-                if (
-                    order.status ===
-                    "Выполнен"
-                ) {
-                    statusClass =
-                        "status-done";
-                }
-
-
-                if (
-                    order.status ===
-                    "Отменён"
-                ) {
-                    statusClass =
-                        "status-cancel";
-                }
-
-
-                return `
-                    <div class="order-history-card">
-
-                        <div class="order-history-top">
-
-                            <strong>
-                                Заказ №${order.id}
-                            </strong>
-
-                            <span class="${statusClass}">
-                                ${getStatusIcon(order.status)}
-                                ${order.status}
-                            </span>
-
-                        </div>
-
-
-                        <div class="order-history-service">
-                            🔧 ${escapeHtml(order.service)}
-                        </div>
-
-
-                        <div class="order-history-date">
-                            📅 Желаемая дата:
-                            ${
-                                order.preferred_date
-                                    ? escapeHtml(
-                                        formatDate(
-                                            order.preferred_date
-                                        )
-                                    )
-                                    : "Не указана"
-                            }
-                        </div>
-
-
-                        <div class="order-history-created">
-                            🕒 Создан:
-                            ${createdDate}
-                        </div>
-
-
-                        ${
-                            order.description
-                                ? `
-                                    <div class="order-history-description">
-                                        📝 ${escapeHtml(
-                                            order.description
-                                        )}
-                                    </div>
-                                  `
-                                : ""
-                        }
-
-                    </div>
-                `;
-
-            }
-        ).join("");
+    justify-content:space-between;
 
 }
 
 
-// ==========================================
-// ИКОНКА СТАТУСА
-// ==========================================
+.logo{
 
-function getStatusIcon(status) {
+    display:flex;
 
-    switch (status) {
+    align-items:center;
 
-        case "В работе":
-            return "🔵";
+    gap:12px;
 
-        case "Выполнен":
-            return "🟢";
+    color:white;
 
-        case "Отменён":
-            return "🔴";
+}
 
-        default:
-            return "🟡";
+
+.logo-mark{
+
+    width:42px;
+    height:42px;
+
+    display:grid;
+
+    place-items:center;
+
+    background:var(--red);
+
+    border-radius:10px;
+
+    font-size:21px;
+
+}
+
+
+.logo strong{
+
+    display:block;
+
+    font-size:16px;
+
+}
+
+
+.logo span{
+
+    display:block;
+
+    color:#b9c9bf;
+
+    font-size:12px;
+
+}
+
+
+.nav{
+
+    display:flex;
+
+    gap:28px;
+
+    color:#dce7df;
+
+    font-size:15px;
+
+}
+
+
+.nav a:hover{
+
+    color:#fff;
+
+}
+
+
+/* ============================= */
+/* MAIN */
+/* ============================= */
+
+main{
+
+    min-height:100vh;
+
+    padding:130px 20px 80px;
+
+}
+
+
+.container{
+
+    width:min(900px,100%);
+
+    margin:auto;
+
+}
+
+
+/* ============================= */
+/* PAGE TITLE */
+/* ============================= */
+
+.page-header{
+
+    text-align:center;
+
+    margin-bottom:45px;
+
+}
+
+
+.label{
+
+    color:var(--red);
+
+    font-size:13px;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+
+    letter-spacing:.12em;
+
+    margin-bottom:10px;
+
+}
+
+
+.page-header h1{
+
+    color:#10291d;
+
+    font-size:clamp(36px,5vw,52px);
+
+    line-height:1.1;
+
+    margin-bottom:15px;
+
+}
+
+
+.page-header p{
+
+    color:var(--muted);
+
+    font-size:17px;
+
+}
+
+
+/* ============================= */
+/* CARDS */
+/* ============================= */
+
+.profile-card,
+.order-card{
+
+    background:#fff;
+
+    border:1px solid var(--border);
+
+    border-radius:24px;
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+
+}
+
+
+/* ============================= */
+/* PROFILE TOP */
+/* ============================= */
+
+.profile-top{
+
+    background:#10291d;
+
+    padding:35px;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+.avatar{
+
+    width:75px;
+    height:75px;
+
+    flex-shrink:0;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:50%;
+
+    background:var(--red);
+
+    color:white;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    border:4px solid rgba(255,255,255,.15);
+
+}
+
+
+.profile-top h2{
+
+    font-size:27px;
+
+    margin-bottom:5px;
+
+}
+
+
+.profile-top p{
+
+    color:#b9c9bf;
+
+    font-size:14px;
+
+}
+
+
+/* ============================= */
+/* PROFILE CONTENT */
+/* ============================= */
+
+.profile-content{
+
+    padding:35px;
+
+}
+
+
+.info-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:18px;
+
+}
+
+
+.info-item{
+
+    padding:20px;
+
+    background:#f7faf8;
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+
+}
+
+
+.info-item small{
+
+    display:block;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-bottom:6px;
+
+}
+
+
+.info-item strong{
+
+    color:var(--green);
+
+    font-size:16px;
+
+    word-break:break-word;
+
+}
+
+
+/* ============================= */
+/* DIVIDER */
+/* ============================= */
+
+.divider{
+
+    height:1px;
+
+    background:var(--border);
+
+    margin:35px 0;
+
+}
+
+
+/* ============================= */
+/* EDIT PROFILE */
+/* ============================= */
+
+.edit-title{
+
+    color:var(--green);
+
+    font-size:24px;
+
+    margin-bottom:8px;
+
+}
+
+
+.edit-description{
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    margin-bottom:22px;
+
+}
+
+
+/* ============================= */
+/* FORMS */
+/* ============================= */
+
+.form-group{
+
+    margin-bottom:18px;
+
+}
+
+
+.form-group label{
+
+    display:block;
+
+    color:var(--green);
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    margin-bottom:7px;
+
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+    width:100%;
+
+    padding:14px 15px;
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    background:#f7faf8;
+
+    color:var(--text);
+
+    font-size:16px;
+
+    outline:none;
+
+    transition:.2s;
+
+    font-family:Arial,sans-serif;
+
+}
+
+
+.form-group textarea{
+
+    resize:vertical;
+
+    min-height:130px;
+
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+
+    border-color:var(--red);
+
+    background:#fff;
+
+    box-shadow:
+        0 0 0 3px rgba(214,40,40,.08);
+
+}
+
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+
+.buttons{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-top:20px;
+
+}
+
+
+.btn{
+
+    min-height:50px;
+
+    padding:0 22px;
+
+    border:0;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    transition:.2s;
+
+}
+
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+.btn-primary{
+
+    background:var(--red);
+
+    color:white;
+
+    box-shadow:
+        0 8px 20px rgba(214,40,40,.22);
+
+}
+
+
+.btn-secondary{
+
+    background:#fff;
+
+    color:var(--green);
+
+    border:1px solid var(--border);
+
+}
+
+
+.btn-green{
+
+    background:var(--green);
+
+    color:white;
+
+}
+
+
+.btn-green:hover{
+
+    background:var(--green2);
+
+}
+
+
+/* ============================= */
+/* ORDER CARD */
+/* ============================= */
+
+.order-card{
+
+    margin-top:35px;
+
+    padding:35px;
+
+}
+
+
+.order-card h2{
+
+    color:var(--green);
+
+    font-size:28px;
+
+    margin-bottom:8px;
+
+}
+
+
+.order-subtitle{
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    margin-bottom:25px;
+
+}
+
+
+/* ============================= */
+/* ORDER BUTTON */
+/* ============================= */
+
+.order-button{
+
+    width:100%;
+
+    min-height:54px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:var(--red);
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    box-shadow:
+        0 8px 20px rgba(214,40,40,.22);
+
+}
+
+
+.order-button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+.order-button:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+
+/* ============================= */
+/* ORDER MESSAGE */
+/* ============================= */
+
+#orderMessage{
+
+    display:none;
+
+    margin-top:15px;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+
+#orderMessage.success{
+
+    display:block;
+
+    background:#e8f1eb;
+
+    color:var(--green);
+
+}
+
+
+#orderMessage.error{
+
+    display:block;
+
+    background:#ffe7e7;
+
+    color:var(--red);
+
+}
+
+
+/* ============================= */
+/* PROFILE MESSAGE */
+/* ============================= */
+
+#message{
+
+    display:none;
+
+    margin-top:15px;
+
+    padding:12px 15px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+
+#message.success{
+
+    display:block;
+
+    background:#e8f1eb;
+
+    color:var(--green);
+
+}
+
+
+#message.error{
+
+    display:block;
+
+    background:#ffe7e7;
+
+    color:var(--red);
+
+}
+
+
+/* ============================= */
+/* LOGOUT */
+/* ============================= */
+
+.logout-area{
+
+    margin-top:35px;
+
+    padding-top:25px;
+
+    border-top:1px solid var(--border);
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+.logout-text strong{
+
+    display:block;
+
+    color:var(--green);
+
+    margin-bottom:3px;
+
+}
+
+
+.logout-text span{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+
+/* ============================= */
+/* LOADING */
+/* ============================= */
+
+#loading{
+
+    text-align:center;
+
+    padding:50px;
+
+    color:var(--muted);
+
+    font-size:17px;
+
+}
+
+
+#profile{
+
+    display:none;
+
+}
+
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media(max-width:700px){
+
+    .nav{
+
+        display:none;
+
+    }
+
+
+    .header-inner{
+
+        width:calc(100% - 30px);
+
+    }
+
+
+    main{
+
+        padding:110px 15px 60px;
+
+    }
+
+
+    .page-header{
+
+        margin-bottom:30px;
+
+    }
+
+
+    .page-header h1{
+
+        font-size:38px;
+
+    }
+
+
+    .profile-top{
+
+        padding:25px;
+
+        align-items:flex-start;
+
+    }
+
+
+    .avatar{
+
+        width:60px;
+        height:60px;
+
+        font-size:24px;
+
+    }
+
+
+    .profile-top h2{
+
+        font-size:22px;
+
+    }
+
+
+    .profile-content{
+
+        padding:25px;
+
+    }
+
+
+    .info-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .order-card{
+
+        padding:25px;
+
+    }
+
+
+    .order-card h2{
+
+        font-size:24px;
+
+    }
+
+
+    .logout-area{
+
+        display:block;
+
+    }
+
+
+    .logout-area .btn{
+
+        width:100%;
+
+        margin-top:18px;
+
+    }
+
+
+    .buttons{
+
+        display:grid;
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .btn{
+
+        width:100%;
 
     }
 
 }
 
+</style>
 
-// ==========================================
-// ФОРМАТ ДАТЫ
-// ==========================================
-
-function formatDate(date) {
-
-    const parts =
-        date.split("-");
+</head>
 
 
-    if (parts.length !== 3) {
-        return date;
-    }
+<body>
 
 
-    return (
-        parts[2] +
-        "." +
-        parts[1] +
-        "." +
-        parts[0]
-    );
+<!-- ============================= -->
+<!-- HEADER -->
+<!-- ============================= -->
 
-}
+<header>
+
+<div class="header-inner">
+
+<a class="logo" href="index.html">
+
+<div class="logo-mark">
+⚒
+</div>
+
+<div>
+
+<strong>
+Сварочная мастерская
+</strong>
+
+<span>
+Сварка • Металлоконструкции
+</span>
+
+</div>
+
+</a>
 
 
-// ==========================================
-// ЗАЩИТА ОТ HTML
-// ==========================================
+<nav class="nav">
 
-function escapeHtml(value) {
+<a href="index.html">
+Главная
+</a>
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+<a href="index.html#services">
+Услуги
+</a>
 
-}
+<a href="index.html#calculator">
+Калькулятор
+</a>
+
+<a href="index.html#works">
+Работы
+</a>
+
+<a href="index.html#contacts">
+Контакты
+</a>
+
+</nav>
+
+</div>
+
+</header>
+
+
+<!-- ============================= -->
+<!-- MAIN -->
+<!-- ============================= -->
+
+<main>
+
+<div class="container">
+
+
+<!-- ============================= -->
+<!-- PAGE HEADER -->
+<!-- ============================= -->
+
+<div class="page-header">
+
+<div class="label">
+Личный кабинет
+</div>
+
+<h1>
+Мой профиль
+</h1>
+
+<p>
+Управляйте своими контактными данными
+</p>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- LOADING -->
+<!-- ============================= -->
+
+<div id="loading">
+Проверяем авторизацию...
+</div>
+
+
+<!-- ============================= -->
+<!-- PROFILE -->
+<!-- ============================= -->
+
+<div id="profile">
+
+
+<!-- ============================= -->
+<!-- PROFILE CARD -->
+<!-- ============================= -->
+
+<div class="profile-card">
+
+
+<!-- PROFILE TOP -->
+
+<div class="profile-top">
+
+
+<div class="avatar" id="avatar">
+?
+</div>
+
+
+<div>
+
+<h2>
+Здравствуйте,
+<span id="profileName">
+Пользователь
+</span>!
+</h2>
+
+<p>
+Ваш личный кабинет клиента
+</p>
+
+</div>
+
+
+</div>
+
+
+<!-- PROFILE CONTENT -->
+
+<div class="profile-content">
+
+
+<!-- INFORMATION -->
+
+<div class="info-grid">
+
+
+<div class="info-item">
+
+<small>
+Имя
+</small>
+
+<strong id="infoName">
+—
+</strong>
+
+</div>
+
+
+<div class="info-item">
+
+<small>
+Email
+</small>
+
+<strong id="infoEmail">
+—
+</strong>
+
+</div>
+
+
+<div class="info-item">
+
+<small>
+Телефон
+</small>
+
+<strong id="infoPhone">
+Не указан
+</strong>
+
+</div>
+
+
+<div class="info-item">
+
+<small>
+Дата регистрации
+</small>
+
+<strong id="infoDate">
+—
+</strong>
+
+</div>
+
+
+</div>
+
+
+<!-- DIVIDER -->
+
+<div class="divider"></div>
+
+
+<!-- ============================= -->
+<!-- EDIT PROFILE -->
+<!-- ============================= -->
+
+<h3 class="edit-title">
+Редактировать профиль
+</h3>
+
+<p class="edit-description">
+Измените имя или добавьте номер телефона.
+</p>
+
+
+<form id="profileForm">
+
+
+<div class="form-group">
+
+<label for="editName">
+Ваше имя
+</label>
+
+<input
+id="editName"
+type="text"
+placeholder="Введите имя"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="editPhone">
+Номер телефона
+</label>
+
+<input
+id="editPhone"
+type="tel"
+inputmode="numeric"
+autocomplete="tel"
+placeholder="+7 (999) 123-45-67"
+maxlength="18"
+>
+
+</div>
+
+
+<div class="buttons">
+
+<button
+type="submit"
+class="btn btn-primary"
+>
+
+💾 Сохранить изменения
+
+</button>
+
+</div>
+
+
+</form>
+
+
+<div
+id="message"
+class="message"
+></div>
+
+
+</div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- ORDER CARD -->
+<!-- ============================= -->
+
+<div class="order-card">
+
+<h2>
+📦 Сделать заказ
+</h2>
+
+<p class="order-subtitle">
+
+Опишите, какая работа вам нужна,
+и отправьте заявку.
+Мы свяжемся с вами для уточнения деталей.
+
+</p>
+
+
+<form id="orderForm">
+
+
+<!-- SERVICE -->
+
+<div class="form-group">
+
+<label for="orderService">
+Что нужно сделать?
+</label>
+
+<select
+id="orderService"
+required
+>
+
+<option value="">
+Выберите услугу
+</option>
+
+<option value="Сварочные работы">
+Сварочные работы
+</option>
+
+<option value="Изготовление ворот">
+Изготовление ворот
+</option>
+
+<option value="Изготовление калитки">
+Изготовление калитки
+</option>
+
+<option value="Изготовление перил">
+Изготовление перил
+</option>
+
+<option value="Металлоконструкции">
+Металлоконструкции
+</option>
+
+<option value="Ремонт металла">
+Ремонт металла
+</option>
+
+<option value="Другое">
+Другое
+</option>
+
+</select>
+
+</div>
+
+
+<!-- PHONE -->
+
+<div class="form-group">
+
+<label for="orderPhone">
+Телефон
+</label>
+
+<input
+id="orderPhone"
+type="tel"
+inputmode="numeric"
+autocomplete="tel"
+placeholder="+7 (999) 123-45-67"
+maxlength="18"
+required
+>
+
+</div>
+
+
+<!-- DATE -->
+
+<div class="form-group">
+
+<label for="orderDate">
+Желаемая дата
+</label>
+
+<input
+id="orderDate"
+type="date"
+>
+
+</div>
+
+
+<!-- DESCRIPTION -->
+
+<div class="form-group">
+
+<label for="orderDescription">
+Опишите заказ
+</label>
+
+<textarea
+id="orderDescription"
+rows="5"
+placeholder="Например: нужны ворота 3 метра шириной и 2 метра высотой..."
+required
+></textarea>
+
+</div>
+
+
+<!-- SUBMIT -->
+
+<button
+type="submit"
+class="order-button"
+>
+
+📩 Отправить заказ
+
+</button>
+
+
+<!-- MESSAGE -->
+
+<div id="orderMessage"></div>
+
+
+</form>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- LOGOUT -->
+<!-- ============================= -->
+
+<div class="logout-area">
+
+
+<div class="logout-text">
+
+<strong>
+Вы вошли в аккаунт
+</strong>
+
+<span>
+Ваши данные сохраняются в Supabase
+</span>
+
+</div>
+
+
+<button
+id="logoutButton"
+class="btn btn-green"
+type="button"
+>
+
+🚪 Выйти
+
+</button>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+</main>
+
+
+<!-- ============================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================= -->
+
+<script
+type="module"
+src="script.js"
+></script>
+
+
+</body>
+
+</html>
