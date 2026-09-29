@@ -36,8 +36,6 @@
 
     --shadow:0 15px 40px rgba(18,61,42,.12);
 
-    --radius:18px;
-
 }
 
 
@@ -222,7 +220,7 @@ main{
 
 
 /* ============================= */
-/* PAGE TITLE */
+/* PAGE HEADER */
 /* ============================= */
 
 .page-header{
@@ -599,17 +597,6 @@ main{
 }
 
 
-.btn-secondary{
-
-    background:#fff;
-
-    color:var(--green);
-
-    border:1px solid var(--border);
-
-}
-
-
 .btn-green{
 
     background:var(--green);
@@ -712,9 +699,10 @@ main{
 
 
 /* ============================= */
-/* ORDER MESSAGE */
+/* MESSAGES */
 /* ============================= */
 
+#message,
 #orderMessage{
 
     display:none;
@@ -732,6 +720,7 @@ main{
 }
 
 
+#message.success,
 #orderMessage.success{
 
     display:block;
@@ -743,6 +732,7 @@ main{
 }
 
 
+#message.error,
 #orderMessage.error{
 
     display:block;
@@ -755,44 +745,116 @@ main{
 
 
 /* ============================= */
-/* PROFILE MESSAGE */
+/* MY ORDERS */
 /* ============================= */
 
-#message{
+.orders-empty{
 
-    display:none;
+    text-align:center;
 
-    margin-top:15px;
+    padding:30px 15px;
 
-    padding:12px 15px;
-
-    border-radius:10px;
-
-    font-size:14px;
-
-    font-weight:bold;
+    color:var(--muted);
 
 }
 
 
-#message.success{
+.order-item{
 
-    display:block;
+    padding:20px;
 
-    background:#e8f1eb;
+    margin-top:15px;
+
+    background:#f7faf8;
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+
+}
+
+
+.order-item-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:12px;
+
+}
+
+
+.order-number{
+
+    font-weight:bold;
 
     color:var(--green);
 
 }
 
 
-#message.error{
+.order-status{
 
-    display:block;
+    padding:6px 10px;
 
-    background:#ffe7e7;
+    border-radius:20px;
 
-    color:var(--red);
+    background:#e8f1eb;
+
+    color:var(--green);
+
+    font-size:12px;
+
+    font-weight:bold;
+
+}
+
+
+.order-info{
+
+    display:grid;
+
+    gap:7px;
+
+    font-size:14px;
+
+}
+
+
+.order-info span{
+
+    color:var(--muted);
+
+}
+
+
+.order-description{
+
+    margin-top:12px;
+
+    padding-top:12px;
+
+    border-top:1px solid var(--border);
+
+    color:var(--text);
+
+    white-space:pre-wrap;
+
+}
+
+
+.order-date{
+
+    margin-top:12px;
+
+    color:var(--muted);
+
+    font-size:12px;
 
 }
 
@@ -959,6 +1021,15 @@ main{
     }
 
 
+    .order-item-header{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+
+    }
+
+
     .logout-area{
 
         display:block;
@@ -1067,9 +1138,7 @@ main{
 <div class="container">
 
 
-<!-- ============================= -->
 <!-- PAGE HEADER -->
-<!-- ============================= -->
 
 <div class="page-header">
 
@@ -1088,18 +1157,14 @@ main{
 </div>
 
 
-<!-- ============================= -->
 <!-- LOADING -->
-<!-- ============================= -->
 
 <div id="loading">
 Проверяем авторизацию...
 </div>
 
 
-<!-- ============================= -->
 <!-- PROFILE -->
-<!-- ============================= -->
 
 <div id="profile">
 
@@ -1110,8 +1175,6 @@ main{
 
 <div class="profile-card">
 
-
-<!-- PROFILE TOP -->
 
 <div class="profile-top">
 
@@ -1124,10 +1187,12 @@ main{
 <div>
 
 <h2>
+
 Здравствуйте,
 <span id="profileName">
 Пользователь
 </span>!
+
 </h2>
 
 <p>
@@ -1139,8 +1204,6 @@ main{
 
 </div>
 
-
-<!-- PROFILE CONTENT -->
 
 <div class="profile-content">
 
@@ -1205,14 +1268,10 @@ Email
 </div>
 
 
-<!-- DIVIDER -->
-
 <div class="divider"></div>
 
 
-<!-- ============================= -->
 <!-- EDIT PROFILE -->
-<!-- ============================= -->
 
 <h3 class="edit-title">
 Редактировать профиль
@@ -1277,10 +1336,7 @@ class="btn btn-primary"
 </form>
 
 
-<div
-id="message"
-class="message"
-></div>
+<div id="message"></div>
 
 
 </div>
@@ -1289,7 +1345,7 @@ class="message"
 
 
 <!-- ============================= -->
-<!-- ORDER CARD -->
+<!-- CREATE ORDER -->
 <!-- ============================= -->
 
 <div class="order-card">
@@ -1309,8 +1365,6 @@ class="message"
 
 <form id="orderForm">
 
-
-<!-- SERVICE -->
 
 <div class="form-group">
 
@@ -1360,8 +1414,6 @@ required
 </div>
 
 
-<!-- PHONE -->
-
 <div class="form-group">
 
 <label for="orderPhone">
@@ -1381,8 +1433,6 @@ required
 </div>
 
 
-<!-- DATE -->
-
 <div class="form-group">
 
 <label for="orderDate">
@@ -1396,8 +1446,6 @@ type="date"
 
 </div>
 
-
-<!-- DESCRIPTION -->
 
 <div class="form-group">
 
@@ -1415,8 +1463,6 @@ required
 </div>
 
 
-<!-- SUBMIT -->
-
 <button
 type="submit"
 class="order-button"
@@ -1427,12 +1473,37 @@ class="order-button"
 </button>
 
 
-<!-- MESSAGE -->
-
 <div id="orderMessage"></div>
 
 
 </form>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- MY ORDERS -->
+<!-- ============================= -->
+
+<div class="order-card">
+
+<h2>
+📋 Мои заказы
+</h2>
+
+<p class="order-subtitle">
+Здесь отображаются ваши заявки и их текущий статус.
+</p>
+
+
+<div id="ordersList">
+
+<div class="orders-empty">
+Загружаем ваши заказы...
+</div>
+
+</div>
+
 
 </div>
 
