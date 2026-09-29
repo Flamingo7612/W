@@ -303,7 +303,9 @@ async function showUser() {
         "block";
 
 
+    // Загружаем заказы пользователя
     await loadOrders(user.id);
+
 }
 
 
@@ -506,6 +508,7 @@ function setupPhoneMask(input) {
 
 
         return result;
+
     }
 
 
@@ -645,6 +648,7 @@ if (orderForm) {
                     "block";
 
                 return;
+
             }
 
 
@@ -679,7 +683,7 @@ if (orderForm) {
             try {
 
                 // ==================================
-                // СОХРАНЯЕМ ЗАКАЗ
+                // СОХРАНЯЕМ ЗАКАЗ В SUPABASE
                 // ==================================
 
                 const {
@@ -717,12 +721,14 @@ if (orderForm) {
 
 
                 if (insertError) {
+
                     throw insertError;
+
                 }
 
 
                 // ==================================
-                // TELEGRAM
+                // ОТПРАВЛЯЕМ В TELEGRAM
                 // ==================================
 
                 button.textContent =
@@ -766,7 +772,9 @@ if (orderForm) {
 
 
                 if (telegramError) {
+
                     throw telegramError;
+
                 }
 
 
@@ -787,8 +795,12 @@ if (orderForm) {
                     false;
 
 
+                // Очищаем форму
+
                 orderForm.reset();
 
+
+                // Возвращаем телефон
 
                 if (phone) {
 
@@ -798,12 +810,16 @@ if (orderForm) {
                         );
 
                     if (orderPhoneInput) {
+
                         orderPhoneInput.value =
                             phone;
+
                     }
 
                 }
 
+
+                // Обновляем список заказов
 
                 await loadOrders(user.id);
 
@@ -856,12 +872,17 @@ async function loadOrders(userId) {
 
 
     if (!ordersList) {
+
         return;
+
     }
 
 
-    ordersList.innerHTML =
-        "<p>⏳ Загружаем заказы...</p>";
+    ordersList.innerHTML = `
+        <div class="orders-empty">
+            ⏳ Загружаем ваши заказы...
+        </div>
+    `;
 
 
     const {
@@ -887,17 +908,25 @@ async function loadOrders(userId) {
             error
         );
 
-        ordersList.innerHTML =
-            "<p>❌ Не удалось загрузить заказы.</p>";
+
+        ordersList.innerHTML = `
+            <div class="orders-empty">
+                ❌ Не удалось загрузить заказы.
+            </div>
+        `;
 
         return;
+
     }
 
+
+    // Если заказов нет
 
     if (!orders || orders.length === 0) {
 
         ordersList.innerHTML = `
-            <div class="empty-orders">
+            <div class="orders-empty">
+
                 <div style="font-size:40px;">
                     📦
                 </div>
@@ -905,12 +934,16 @@ async function loadOrders(userId) {
                 <p>
                     У вас пока нет заказов.
                 </p>
+
             </div>
         `;
 
         return;
+
     }
 
+
+    // Выводим заказы
 
     ordersList.innerHTML =
         orders.map(
@@ -924,92 +957,110 @@ async function loadOrders(userId) {
                     );
 
 
-                let statusClass =
-                    "status-new";
-
-
-                if (
-                    order.status ===
-                    "В работе"
-                ) {
-                    statusClass =
-                        "status-work";
-                }
-
-
-                if (
-                    order.status ===
-                    "Выполнен"
-                ) {
-                    statusClass =
-                        "status-done";
-                }
-
-
-                if (
-                    order.status ===
-                    "Отменён"
-                ) {
-                    statusClass =
-                        "status-cancel";
-                }
+                const status =
+                    order.status ||
+                    "Новый";
 
 
                 return `
-                    <div class="order-history-card">
 
-                        <div class="order-history-top">
+                    <div class="order-item">
 
-                            <strong>
+
+                        <div class="order-item-header">
+
+
+                            <div class="order-number">
+
                                 Заказ №${order.id}
-                            </strong>
 
-                            <span class="${statusClass}">
-                                ${getStatusIcon(order.status)}
-                                ${order.status}
-                            </span>
+                            </div>
+
+
+                            <div class="order-status">
+
+                                ${getStatusIcon(status)}
+
+                                ${escapeHtml(status)}
+
+                            </div>
+
 
                         </div>
 
 
-                        <div class="order-history-service">
-                            🔧 ${escapeHtml(order.service)}
-                        </div>
+                        <div class="order-info">
 
 
-                        <div class="order-history-date">
-                            📅 Желаемая дата:
-                            ${
-                                order.preferred_date
-                                    ? escapeHtml(
-                                        formatDate(
-                                            order.preferred_date
+                            <div>
+
+                                <span>
+                                    Услуга:
+                                </span>
+
+                                ${escapeHtml(
+                                    order.service ||
+                                    "Не указана"
+                                )}
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Желаемая дата:
+                                </span>
+
+                                ${
+                                    order.preferred_date
+                                        ? escapeHtml(
+                                            formatDate(
+                                                order.preferred_date
+                                            )
                                         )
-                                    )
-                                    : "Не указана"
-                            }
-                        </div>
+                                        : "Не указана"
+                                }
+
+                            </div>
 
 
-                        <div class="order-history-created">
-                            🕒 Создан:
-                            ${createdDate}
                         </div>
 
 
                         ${
                             order.description
                                 ? `
-                                    <div class="order-history-description">
-                                        📝 ${escapeHtml(
+
+                                    <div class="order-description">
+
+                                        <span>
+                                            📝 Описание:
+                                        </span>
+
+                                        <br>
+
+                                        ${escapeHtml(
                                             order.description
                                         )}
+
                                     </div>
-                                  `
+
+                                `
                                 : ""
                         }
 
+
+                        <div class="order-date">
+
+                            🕐 Заказ создан:
+                            ${createdDate}
+
+                        </div>
+
+
                     </div>
+
                 `;
 
             }
@@ -1027,15 +1078,22 @@ function getStatusIcon(status) {
     switch (status) {
 
         case "В работе":
+
             return "🔵";
 
+
         case "Выполнен":
+
             return "🟢";
 
+
         case "Отменён":
+
             return "🔴";
 
+
         default:
+
             return "🟡";
 
     }
@@ -1054,16 +1112,20 @@ function formatDate(date) {
 
 
     if (parts.length !== 3) {
+
         return date;
+
     }
 
 
     return (
+
         parts[2] +
         "." +
         parts[1] +
         "." +
         parts[0]
+
     );
 
 }
@@ -1076,10 +1138,30 @@ function formatDate(date) {
 function escapeHtml(value) {
 
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
