@@ -56,8 +56,57 @@ if (registerForm) {
             return;
         }
 
-        const { data, error } =
-            await supabase.auth.signUp({
+       const { data, error } =
+    await supabase.auth.signUp({
+        email: email,
+        password: password,
+
+        options: {
+            data: {
+                name: name
+            }
+        }
+    });
+
+console.log("SIGN UP DATA:", data);
+console.log("SIGN UP ERROR:", error);
+
+if (error) {
+    console.error(error);
+
+    alert(
+        "Ошибка регистрации:\n" +
+        error.message
+    );
+
+    return;
+}
+
+if (!data || !data.user) {
+
+    alert(
+        "Supabase не создал пользователя.\n\n" +
+        "Открой консоль браузера и посмотри результат."
+    );
+
+    return;
+}
+
+if (!data.session) {
+
+    alert(
+        "Пользователь создан!\n\n" +
+        "Теперь подтверди email через письмо."
+    );
+
+} else {
+
+    alert(
+        "Регистрация успешна!"
+    );
+}
+
+registerForm.reset();
 
                 email: email,
                 password: password,
