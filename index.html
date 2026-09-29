@@ -22,17 +22,17 @@
 --white:#fff;
 --border:#d7e3da;
 --shadow:0 15px 40px rgba(18,61,42,.12);
---radius:18px
+--radius:18px;
 }
 
 *{
 margin:0;
 padding:0;
-box-sizing:border-box
+box-sizing:border-box;
 }
 
 html{
-scroll-behavior:smooth
+scroll-behavior:smooth;
 }
 
 body{
@@ -40,22 +40,22 @@ font-family:Arial,sans-serif;
 background:var(--bg);
 color:var(--text);
 line-height:1.5;
-overflow-x:hidden
+overflow-x:hidden;
 }
 
 a{
 text-decoration:none;
-color:inherit
+color:inherit;
 }
 
 img{
 display:block;
-max-width:100%
+max-width:100%;
 }
 
 .container{
 width:min(1180px,calc(100% - 40px));
-margin:auto
+margin:auto;
 }
 
 
@@ -72,21 +72,21 @@ height:70px;
 background:rgba(18,61,42,.96);
 backdrop-filter:blur(10px);
 z-index:1000;
-border-bottom:1px solid rgba(255,255,255,.1)
+border-bottom:1px solid rgba(255,255,255,.1);
 }
 
 .header-inner{
 height:100%;
 display:flex;
 align-items:center;
-justify-content:space-between
+justify-content:space-between;
 }
 
 .logo{
 display:flex;
 align-items:center;
 gap:12px;
-color:white
+color:white;
 }
 
 .logo-mark{
@@ -96,34 +96,34 @@ display:grid;
 place-items:center;
 background:var(--red);
 border-radius:10px;
-font-size:21px
+font-size:21px;
 }
 
 .logo strong{
 display:block;
-font-size:16px
+font-size:16px;
 }
 
 .logo span{
 display:block;
 color:#b9c9bf;
-font-size:12px
+font-size:12px;
 }
 
 .nav{
 display:flex;
 gap:28px;
 color:#dce7df;
-font-size:15px
+font-size:15px;
 }
 
 .nav a:hover{
-color:#fff
+color:#fff;
 }
 
 .phone{
 color:white;
-font-weight:bold
+font-weight:bold;
 }
 
 .menu-btn{
@@ -134,7 +134,7 @@ border:0;
 border-radius:10px;
 background:rgba(255,255,255,.1);
 color:#fff;
-font-size:24px
+font-size:24px;
 }
 
 
@@ -153,11 +153,11 @@ background:var(--green);
 z-index:1200;
 transform:translateX(100%);
 transition:.3s;
-box-shadow:-15px 0 40px rgba(0,0,0,.2)
+box-shadow:-15px 0 40px rgba(0,0,0,.2);
 }
 
 .sidebar.active{
-transform:translateX(0)
+transform:translateX(0);
 }
 
 .close{
@@ -170,7 +170,7 @@ border:0;
 border-radius:10px;
 background:rgba(255,255,255,.1);
 color:#fff;
-font-size:25px
+font-size:25px;
 }
 
 .sidebar a{
@@ -178,7 +178,7 @@ display:block;
 padding:17px 5px;
 color:white;
 font-size:19px;
-border-bottom:1px solid rgba(255,255,255,.1)
+border-bottom:1px solid rgba(255,255,255,.1);
 }
 
 .overlay{
@@ -188,12 +188,12 @@ background:rgba(0,0,0,.55);
 z-index:1100;
 opacity:0;
 visibility:hidden;
-transition:.3s
+transition:.3s;
 }
 
 .overlay.active{
 opacity:1;
-visibility:visible
+visibility:visible;
 }
 
 
@@ -203,14 +203,14 @@ HERO
 
 .hero{
 padding:145px 0 90px;
-background:linear-gradient(120deg,#f7faf8,#e8f1eb)
+background:linear-gradient(120deg,#f7faf8,#e8f1eb);
 }
 
 .hero-grid{
 display:grid;
 grid-template-columns:1.05fr .95fr;
 gap:70px;
-align-items:center
+align-items:center;
 }
 
 .eyebrow{
@@ -224,7 +224,7 @@ color:var(--green);
 font-size:13px;
 font-weight:bold;
 text-transform:uppercase;
-letter-spacing:.05em
+letter-spacing:.05em;
 }
 
 .eyebrow:before{
@@ -233,7 +233,7 @@ width:7px;
 height:7px;
 margin-top:6px;
 border-radius:50%;
-background:var(--red)
+background:var(--red);
 }
 
 h1{
@@ -241,25 +241,25 @@ font-size:clamp(42px,5vw,70px);
 line-height:1.02;
 letter-spacing:-.04em;
 color:#10291d;
-margin-bottom:22px
+margin-bottom:22px;
 }
 
 h1 span{
-color:var(--red)
+color:var(--red);
 }
 
 .hero-text{
 max-width:610px;
 margin-bottom:30px;
 color:var(--muted);
-font-size:20px
+font-size:20px;
 }
 
 .buttons{
 display:flex;
 flex-wrap:wrap;
 gap:12px;
-margin-bottom:30px
+margin-bottom:30px;
 }
 
 .btn{
@@ -271,40 +271,40 @@ min-height:52px;
 padding:0 24px;
 border-radius:10px;
 font-weight:bold;
-transition:.2s
+transition:.2s;
 }
 
 .btn:hover{
-transform:translateY(-2px)
+transform:translateY(-2px);
 }
 
 .primary{
 background:var(--red);
 color:#fff;
-box-shadow:0 8px 20px rgba(214,40,40,.22)
+box-shadow:0 8px 20px rgba(214,40,40,.22);
 }
 
 .secondary{
 background:#fff;
 color:var(--green);
-border:1px solid var(--border)
+border:1px solid var(--border);
 }
 
 .features{
 display:flex;
 flex-wrap:wrap;
-gap:18px
+gap:18px;
 }
 
 .feature{
 font-size:14px;
 font-weight:bold;
-color:var(--green)
+color:var(--green);
 }
 
 .feature:before{
 content:"✓";
-margin-right:7px
+margin-right:7px;
 }
 
 .hero-img{
@@ -313,11 +313,11 @@ height:520px;
 object-fit:cover;
 border:6px solid white;
 border-radius:24px;
-box-shadow:var(--shadow)
+box-shadow:var(--shadow);
 }
 
 .image-wrap{
-position:relative
+position:relative;
 }
 
 .badge{
@@ -327,18 +327,18 @@ bottom:25px;
 background:#fff;
 padding:16px 20px;
 border-radius:14px;
-box-shadow:var(--shadow)
+box-shadow:var(--shadow);
 }
 
 .badge strong{
 display:block;
 color:var(--green);
-font-size:19px
+font-size:19px;
 }
 
 .badge span{
 color:var(--muted);
-font-size:13px
+font-size:13px;
 }
 
 
@@ -347,21 +347,21 @@ SECTIONS
 ========================= */
 
 section{
-padding:100px 0
+padding:100px 0;
 }
 
 .light{
-background:var(--bg)
+background:var(--bg);
 }
 
 .green-bg{
-background:var(--light)
+background:var(--light);
 }
 
 .heading{
 text-align:center;
 max-width:700px;
-margin:0 auto 50px
+margin:0 auto 50px;
 }
 
 .label{
@@ -370,7 +370,7 @@ font-size:13px;
 font-weight:800;
 text-transform:uppercase;
 letter-spacing:.12em;
-margin-bottom:10px
+margin-bottom:10px;
 }
 
 .heading h2,
@@ -379,14 +379,14 @@ margin-bottom:10px
 color:#10291d;
 font-size:clamp(32px,4vw,46px);
 line-height:1.1;
-margin-bottom:15px
+margin-bottom:15px;
 }
 
 .heading p,
 .about p,
 .contact-intro{
 color:var(--muted);
-font-size:17px
+font-size:17px;
 }
 
 
@@ -397,7 +397,7 @@ CARDS
 .cards{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:20px
+gap:20px;
 }
 
 .card{
@@ -406,12 +406,12 @@ background:#fff;
 border:1px solid var(--border);
 border-radius:var(--radius);
 box-shadow:0 5px 20px rgba(18,61,42,.05);
-transition:.2s
+transition:.2s;
 }
 
 .card:hover{
 transform:translateY(-5px);
-box-shadow:var(--shadow)
+box-shadow:var(--shadow);
 }
 
 .icon{
@@ -423,17 +423,17 @@ background:var(--green);
 color:white;
 border-radius:13px;
 font-size:23px;
-margin-bottom:18px
+margin-bottom:18px;
 }
 
 .card h3{
 color:var(--green);
-margin-bottom:9px
+margin-bottom:9px;
 }
 
 .card p{
 color:var(--muted);
-font-size:15px
+font-size:15px;
 }
 
 
@@ -445,7 +445,7 @@ ABOUT
 display:grid;
 grid-template-columns:.9fr 1.1fr;
 gap:70px;
-align-items:center
+align-items:center;
 }
 
 .about-img{
@@ -454,28 +454,28 @@ height:500px;
 object-fit:cover;
 border:5px solid white;
 border-radius:24px;
-box-shadow:var(--shadow)
+box-shadow:var(--shadow);
 }
 
 .about p{
-margin-bottom:15px
+margin-bottom:15px;
 }
 
 .list{
 display:grid;
 gap:10px;
 margin-top:24px;
-list-style:none
+list-style:none;
 }
 
 .list li{
-font-weight:bold
+font-weight:bold;
 }
 
 .list li:before{
 content:"✓";
 color:var(--red);
-margin-right:10px
+margin-right:10px;
 }
 
 
@@ -486,7 +486,7 @@ SERVICES
 .services{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:16px
+gap:16px;
 }
 
 .service{
@@ -494,32 +494,32 @@ background:white;
 border:1px solid var(--border);
 border-radius:var(--radius);
 padding:24px;
-transition:.2s
+transition:.2s;
 }
 
 .service:hover{
 transform:translateY(-5px);
-box-shadow:var(--shadow)
+box-shadow:var(--shadow);
 }
 
 .num{
 color:#9cac9f;
 font-weight:bold;
 font-size:13px;
-margin-bottom:25px
+margin-bottom:25px;
 }
 
 .service h3{
 color:var(--green);
 min-height:52px;
 font-size:18px;
-margin-bottom:10px
+margin-bottom:10px;
 }
 
 .service p{
 color:var(--muted);
 font-size:14px;
-min-height:60px
+min-height:60px;
 }
 
 .price{
@@ -527,24 +527,24 @@ border-top:1px solid var(--border);
 padding-top:14px;
 margin-top:15px;
 color:var(--red);
-font-weight:bold
+font-weight:bold;
 }
 
 
-/* =====================================================
-КАЛЬКУЛЯТОР
-===================================================== */
+/* =========================
+CALCULATOR
+========================= */
 
 .calculator-section{
 background:#10291d;
-color:#fff
+color:#fff;
 }
 
 .calculator-wrapper{
 display:grid;
 grid-template-columns:1fr .8fr;
 gap:35px;
-align-items:start
+align-items:start;
 }
 
 .calculator-box{
@@ -552,29 +552,29 @@ background:#fff;
 color:var(--text);
 border-radius:24px;
 padding:30px;
-box-shadow:var(--shadow)
+box-shadow:var(--shadow);
 }
 
 .calculator-title{
 font-size:30px;
 color:var(--green);
-margin-bottom:8px
+margin-bottom:8px;
 }
 
 .calculator-description{
 color:var(--muted);
-margin-bottom:25px
+margin-bottom:25px;
 }
 
 .calc-step{
-margin-bottom:22px
+margin-bottom:22px;
 }
 
 .calc-step-title{
 font-size:16px;
 font-weight:bold;
 color:var(--green);
-margin-bottom:9px
+margin-bottom:9px;
 }
 
 .calc-select,
@@ -586,29 +586,29 @@ border-radius:10px;
 background:#f7faf8;
 font-size:16px;
 color:var(--text);
-outline:none
+outline:none;
 }
 
 .calc-select:focus,
 .calc-input:focus{
-border-color:var(--red)
+border-color:var(--red);
 }
 
 .dimension-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:12px
+gap:12px;
 }
 
 .dimension-box label{
 display:block;
 font-size:13px;
 color:var(--muted);
-margin-bottom:6px
+margin-bottom:6px;
 }
 
 .hidden{
-display:none
+display:none !important;
 }
 
 .calc-add{
@@ -621,31 +621,33 @@ color:#fff;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
-transition:.2s
+transition:.2s;
 }
 
 .calc-add:hover{
-background:var(--green2)
+background:var(--green2);
 }
 
 .calc-add:active{
-transform:scale(.98)
+transform:scale(.98);
 }
 
 
-/* СПИСОК РАБОТ */
+/* =========================
+SELECTED
+========================= */
 
 .selected-title{
 font-size:20px;
 font-weight:bold;
 color:var(--green);
 margin-top:30px;
-margin-bottom:12px
+margin-bottom:12px;
 }
 
 .selected-list{
 display:grid;
-gap:10px
+gap:10px;
 }
 
 .selected-item{
@@ -656,29 +658,29 @@ gap:12px;
 padding:14px;
 background:#f7faf8;
 border:1px solid var(--border);
-border-radius:12px
+border-radius:12px;
 }
 
 .selected-info{
-min-width:0
+min-width:0;
 }
 
 .selected-name{
 font-weight:bold;
 color:var(--green);
-font-size:14px
+font-size:14px;
 }
 
 .selected-details{
 font-size:12px;
 color:var(--muted);
-margin-top:3px
+margin-top:3px;
 }
 
 .selected-price{
 font-weight:bold;
 color:var(--red);
-white-space:nowrap
+white-space:nowrap;
 }
 
 .remove-item{
@@ -690,7 +692,7 @@ background:#ffe7e7;
 color:var(--red);
 font-size:18px;
 cursor:pointer;
-flex-shrink:0
+flex-shrink:0;
 }
 
 .empty-list{
@@ -699,28 +701,30 @@ border:1px dashed var(--border);
 border-radius:12px;
 color:var(--muted);
 text-align:center;
-font-size:14px
+font-size:14px;
 }
 
 
-/* ИТОГ */
+/* =========================
+TOTAL
+========================= */
 
 .calc-total{
 margin-top:20px;
 padding:20px;
 border-radius:15px;
 background:var(--green);
-color:#fff
+color:#fff;
 }
 
 .calc-total small{
 display:block;
 color:#b9c9bf;
-margin-bottom:3px
+margin-bottom:3px;
 }
 
 .calc-total strong{
-font-size:34px
+font-size:34px;
 }
 
 .clear-button{
@@ -732,43 +736,45 @@ border-radius:10px;
 background:#fff;
 color:var(--muted);
 font-weight:bold;
-cursor:pointer
+cursor:pointer;
 }
 
 
-/* ИНФОРМАЦИЯ СПРАВА */
+/* =========================
+CALCULATOR INFO
+========================= */
 
 .calculator-info{
-padding:20px 10px
+padding:20px 10px;
 }
 
 .calculator-info .label{
-color:#ff7777
+color:#ff7777;
 }
 
 .calculator-info h2{
 font-size:clamp(32px,4vw,48px);
 line-height:1.1;
-margin-bottom:20px
+margin-bottom:20px;
 }
 
 .calculator-info p{
 color:#b9c9bf;
 font-size:17px;
-margin-bottom:25px
+margin-bottom:25px;
 }
 
 .calc-benefits{
 display:grid;
 gap:14px;
-list-style:none
+list-style:none;
 }
 
 .calc-benefits li{
 display:flex;
 gap:10px;
 align-items:flex-start;
-color:#fff
+color:#fff;
 }
 
 .calc-benefits li span{
@@ -779,7 +785,7 @@ height:25px;
 border-radius:50%;
 background:var(--red);
 font-size:13px;
-flex-shrink:0
+flex-shrink:0;
 }
 
 
@@ -791,24 +797,24 @@ GALLERY
 display:grid;
 grid-template-columns:repeat(3,1fr);
 grid-auto-rows:250px;
-gap:15px
+gap:15px;
 }
 
 .work{
 position:relative;
 overflow:hidden;
-border-radius:18px
+border-radius:18px;
 }
 
 .work img{
 width:100%;
 height:100%;
 object-fit:cover;
-transition:.4s
+transition:.4s;
 }
 
 .work:hover img{
-transform:scale(1.06)
+transform:scale(1.06);
 }
 
 .caption{
@@ -821,7 +827,7 @@ border-radius:8px;
 background:rgba(18,61,42,.88);
 color:#fff;
 font-size:13px;
-font-weight:bold
+font-weight:bold;
 }
 
 
@@ -832,28 +838,28 @@ CTA
 .cta{
 padding:65px 0;
 background:#10291d;
-color:#fff
+color:#fff;
 }
 
 .cta-inner{
 display:flex;
 justify-content:space-between;
 align-items:center;
-gap:30px
+gap:30px;
 }
 
 .cta h2{
 font-size:clamp(28px,4vw,42px);
 line-height:1.1;
-margin-bottom:8px
+margin-bottom:8px;
 }
 
 .cta p{
-color:#b9c9bf
+color:#b9c9bf;
 }
 
 .cta .buttons{
-margin:0
+margin:0;
 }
 
 
@@ -864,20 +870,20 @@ CONTACTS
 .contacts-grid{
 display:grid;
 grid-template-columns:.8fr 1.2fr;
-gap:60px
+gap:60px;
 }
 
 .contact h2{
-margin-bottom:18px
+margin-bottom:18px;
 }
 
 .contact-intro{
-margin-bottom:25px
+margin-bottom:25px;
 }
 
 .contact-list{
 display:grid;
-gap:14px
+gap:14px;
 }
 
 .contact-card{
@@ -887,7 +893,7 @@ gap:15px;
 padding:17px;
 background:#fff;
 border:1px solid var(--border);
-border-radius:13px
+border-radius:13px;
 }
 
 .contact-icon{
@@ -899,19 +905,19 @@ flex-shrink:0;
 border-radius:10px;
 background:var(--green);
 color:#fff;
-font-size:19px
+font-size:19px;
 }
 
 .contact-card small{
 display:block;
 color:var(--muted);
-font-size:12px
+font-size:12px;
 }
 
 .contact-card a,
 .contact-card strong{
 color:var(--green);
-font-size:16px
+font-size:16px;
 }
 
 .map{
@@ -922,22 +928,22 @@ text-align:center;
 padding:30px;
 border-radius:24px;
 background:linear-gradient(135deg,#dcebe1,#cbded0);
-border:1px solid var(--border)
+border:1px solid var(--border);
 }
 
 .map-icon{
 font-size:50px;
-margin-bottom:10px
+margin-bottom:10px;
 }
 
 .map h3{
 color:var(--green);
-margin-bottom:7px
+margin-bottom:7px;
 }
 
 .map p{
 color:var(--muted);
-margin-bottom:20px
+margin-bottom:20px;
 }
 
 
@@ -949,82 +955,66 @@ footer{
 padding:28px 0;
 background:#0b1e15;
 color:#9cad9f;
-font-size:13px
+font-size:13px;
 }
 
 .footer-inner{
 display:flex;
 justify-content:space-between;
-gap:20px
+gap:20px;
 }
 
 .footer-brand{
 color:white;
-font-weight:bold
+font-weight:bold;
 }
 
 
 /* =========================
-ANIMATION
-========================= */
-
-.reveal{
-opacity:0;
-transform:translateY(20px);
-transition:.7s
-}
-
-.reveal.visible{
-opacity:1;
-transform:none
-}
-
-
-/* =========================
-ADAPTIVE
+АДАПТИВ
 ========================= */
 
 @media(max-width:1000px){
 
 .nav,
 .phone{
-display:none
+display:none;
 }
 
 .menu-btn{
-display:block
+display:block;
 }
 
 .hero-grid{
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
 .hero-img{
-height:430px
+height:430px;
 }
 
 .about-grid{
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
 .cards{
-grid-template-columns:repeat(2,1fr)
+grid-template-columns:repeat(2,1fr);
 }
 
 .services{
-grid-template-columns:repeat(2,1fr)
+grid-template-columns:repeat(2,1fr);
 }
 
 .contacts-grid{
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
 .calculator-wrapper{
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
 .calculator-info{
-padding:0
+padding:0;
 }
 
 }
@@ -1034,123 +1024,118 @@ padding:0
 
 .container,
 .header-inner{
-width:calc(100% - 30px)
+width:calc(100% - 30px);
 }
 
 .hero{
-padding:115px 0 65px
+padding:115px 0 65px;
 }
 
 .hero h1{
-font-size:42px
+font-size:42px;
 }
 
 .hero-text{
-font-size:17px
+font-size:17px;
 }
 
 .buttons{
 display:grid;
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
 .btn{
-width:100%
+width:100%;
 }
 
 .features{
 display:grid;
-gap:9px
+gap:9px;
 }
 
 .hero-img{
 height:320px;
-border-radius:18px
+border-radius:18px;
 }
 
 .badge{
-left:15px
+left:15px;
 }
 
 .cards,
 .services{
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
 section{
-padding:70px 0
+padding:70px 0;
 }
 
 .about-img{
-height:330px
+height:330px;
 }
 
 .gallery{
 grid-template-columns:repeat(2,1fr);
 grid-auto-rows:180px;
-gap:9px
+gap:9px;
 }
 
 .caption{
 font-size:11px;
-padding:7px
+padding:7px;
 }
 
 .cta-inner{
-display:block
+display:block;
 }
 
 .cta .buttons{
-margin-top:22px
+margin-top:22px;
 }
 
 .footer-inner{
 display:block;
-text-align:center
+text-align:center;
 }
 
 .footer-inner div{
-margin-bottom:7px
+margin-bottom:7px;
 }
 
 .calculator-box{
-padding:20px
+padding:20px;
 }
 
 .calculator-title{
-font-size:26px
+font-size:26px;
 }
 
 .dimension-grid{
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
 .selected-item{
-align-items:flex-start
+align-items:flex-start;
 }
 
 .selected-price{
-font-size:13px
+font-size:13px;
 }
 
 }
 
 
 /* =========================
-REDUCED MOTION
+ИЗОБРАЖЕНИЯ
 ========================= */
 
-@media(prefers-reduced-motion:reduce){
+/* ВАЖНО:
+   Здесь специально НЕТ opacity:0.
+   Поэтому сайт не исчезнет,
+   даже если JavaScript отключён.
+*/
 
-html{
-scroll-behavior:auto
-}
-
-.reveal{
-transition:none
-}
-
-}
 
 </style>
 
@@ -1183,13 +1168,9 @@ HEADER
 <nav class="nav">
 
 <a href="#about">О нас</a>
-
 <a href="#services">Услуги</a>
-
 <a href="#calculator">Калькулятор</a>
-
 <a href="#works">Работы</a>
-
 <a href="#contacts">Контакты</a>
 
 </nav>
@@ -1200,13 +1181,8 @@ HEADER
 </a>
 
 
-<button
-class="menu-btn"
-id="menuBtn"
-aria-label="Открыть меню">
-
+<button class="menu-btn" id="menuBtn">
 ☰
-
 </button>
 
 </div>
@@ -1214,39 +1190,26 @@ aria-label="Открыть меню">
 </header>
 
 
-
 <!-- =========================
-MOBILE MENU
+SIDEBAR
 ========================= -->
 
 <aside class="sidebar" id="sidebar">
 
-<button
-class="close"
-id="closeBtn"
-aria-label="Закрыть меню">
-
+<button class="close" id="closeBtn">
 ×
-
 </button>
 
 <a href="#home">Главная</a>
-
 <a href="#about">О нас</a>
-
 <a href="#services">Услуги</a>
-
 <a href="#calculator">Калькулятор</a>
-
 <a href="#works">Наши работы</a>
-
 <a href="#contacts">Контакты</a>
 
 </aside>
 
-
 <div class="overlay" id="overlay"></div>
-
 
 
 <main>
@@ -1262,13 +1225,11 @@ HERO
 
 <div class="hero-grid">
 
-
-<div class="reveal">
+<div>
 
 <div class="eyebrow">
 Сварочные работы
 </div>
-
 
 <h1>
 Надёжные
@@ -1276,36 +1237,25 @@ HERO
 под вашу задачу
 </h1>
 
-
 <p class="hero-text">
 Изготавливаем и ремонтируем металлические конструкции.
 Выполняем сварочные работы аккуратно и в согласованные сроки.
 </p>
 
-
 <div class="buttons">
 
-<a
-class="btn primary"
-href="tel:+79992339777">
-
+<a class="btn primary" href="tel:+79992339777">
 ☎ Позвонить мастеру
-
 </a>
 
-
-<a
-class="btn secondary"
+<a class="btn secondary"
 href="https://t.me/tamletamak76"
 target="_blank"
 rel="noopener">
-
 Написать в Telegram
-
 </a>
 
 </div>
-
 
 <div class="features">
 
@@ -1326,7 +1276,7 @@ rel="noopener">
 </div>
 
 
-<div class="image-wrap reveal">
+<div class="image-wrap">
 
 <img
 class="hero-img"
@@ -1345,13 +1295,11 @@ alt="Сварочные работы полуавтоматом">
 
 </div>
 
-
 </div>
 
 </div>
 
 </section>
-
 
 
 <!-- =========================
@@ -1362,7 +1310,7 @@ WHY US
 
 <div class="container">
 
-<div class="heading reveal">
+<div class="heading">
 
 <div class="label">
 Почему мы
@@ -1382,12 +1330,9 @@ WHY US
 
 <div class="cards">
 
+<article class="card">
 
-<article class="card reveal">
-
-<div class="icon">
-⚒
-</div>
+<div class="icon">⚒</div>
 
 <h3>
 Аккуратная работа
@@ -1401,11 +1346,9 @@ WHY US
 </article>
 
 
-<article class="card reveal">
+<article class="card">
 
-<div class="icon">
-✓
-</div>
+<div class="icon">✓</div>
 
 <h3>
 Согласованные сроки
@@ -1419,11 +1362,9 @@ WHY US
 </article>
 
 
-<article class="card reveal">
+<article class="card">
 
-<div class="icon">
-₽
-</div>
+<div class="icon">₽</div>
 
 <h3>
 Понятная стоимость
@@ -1436,13 +1377,11 @@ WHY US
 
 </article>
 
-
 </div>
 
 </div>
 
 </section>
-
 
 
 <!-- =========================
@@ -1455,8 +1394,7 @@ ABOUT
 
 <div class="about-grid">
 
-
-<div class="reveal">
+<div>
 
 <img
 class="about-img"
@@ -1467,7 +1405,7 @@ loading="lazy">
 </div>
 
 
-<div class="about reveal">
+<div class="about">
 
 <div class="label">
 О мастерской
@@ -1487,36 +1425,22 @@ loading="lazy">
 материал, конструкцию и пожелания заказчика.
 </p>
 
-
 <ul class="list">
 
-<li>
-Сварочные работы
-</li>
-
-<li>
-Изготовление металлоконструкций
-</li>
-
-<li>
-Ремонт металлических конструкций
-</li>
-
-<li>
-Изготовление ворот, калиток и перил
-</li>
+<li>Сварочные работы</li>
+<li>Изготовление металлоконструкций</li>
+<li>Ремонт металлических конструкций</li>
+<li>Изготовление ворот, калиток и перил</li>
 
 </ul>
 
 </div>
-
 
 </div>
 
 </div>
 
 </section>
-
 
 
 <!-- =========================
@@ -1527,7 +1451,7 @@ SERVICES
 
 <div class="container">
 
-<div class="heading reveal">
+<div class="heading">
 
 <div class="label">
 Услуги
@@ -1546,159 +1470,87 @@ SERVICES
 
 <div class="services">
 
-
-<article class="service reveal">
-
+<article class="service">
 <div class="num">01</div>
-
-<h3>
-Сварочные работы
-</h3>
-
-<p>
-Различные сварочные и слесарные работы.
-</p>
-
-<div class="price">
-от 500 ₽
-</div>
-
+<h3>Сварочные работы</h3>
+<p>Различные сварочные и слесарные работы.</p>
+<div class="price">от 500 ₽</div>
 </article>
 
 
-<article class="service reveal">
-
+<article class="service">
 <div class="num">02</div>
-
-<h3>
-Металлические конструкции
-</h3>
-
-<p>
-Изготовление конструкций по вашим размерам.
-</p>
-
-<div class="price">
-от 1 000 ₽
-</div>
-
+<h3>Металлические конструкции</h3>
+<p>Изготовление конструкций по вашим размерам.</p>
+<div class="price">от 1 000 ₽</div>
 </article>
 
 
-<article class="service reveal">
-
+<article class="service">
 <div class="num">03</div>
-
-<h3>
-Металлические детали
-</h3>
-
-<p>
-Изготовление отдельных деталей и элементов.
-</p>
-
-<div class="price">
-от 800 ₽
-</div>
-
+<h3>Металлические детали</h3>
+<p>Изготовление отдельных деталей и элементов.</p>
+<div class="price">от 800 ₽</div>
 </article>
 
 
-<article class="service reveal">
-
+<article class="service">
 <div class="num">04</div>
-
-<h3>
-Ворота
-</h3>
-
-<p>
-Изготовление металлических ворот.
-</p>
-
-<div class="price">
-от 8 000 ₽
-</div>
-
+<h3>Ворота</h3>
+<p>Изготовление металлических ворот.</p>
+<div class="price">от 8 000 ₽</div>
 </article>
 
 
-<article class="service reveal">
-
+<article class="service">
 <div class="num">05</div>
-
-<h3>
-Калитки
-</h3>
-
-<p>
-Изготовление калиток различных конструкций.
-</p>
-
-<div class="price">
-от 4 000 ₽
-</div>
-
+<h3>Калитки</h3>
+<p>Изготовление калиток различных конструкций.</p>
+<div class="price">от 4 000 ₽</div>
 </article>
 
 
-<article class="service reveal">
-
+<article class="service">
 <div class="num">06</div>
-
-<h3>
-Ремонт конструкций
-</h3>
-
-<p>
-Ремонт и восстановление металлических изделий.
-</p>
-
-<div class="price">
-от 700 ₽
-</div>
-
+<h3>Ремонт конструкций</h3>
+<p>Ремонт и восстановление металлических изделий.</p>
+<div class="price">от 700 ₽</div>
 </article>
 
 
-<article class="service reveal">
-
+<article class="service">
 <div class="num">07</div>
-
-<h3>
-Перила
-</h3>
-
-<p>
-Изготовление металлических перил.
-</p>
-
-<div class="price">
-от 3 000 ₽
-</div>
-
+<h3>Перила</h3>
+<p>Изготовление металлических перил.</p>
+<div class="price">от 3 000 ₽</div>
 </article>
 
 
-<article class="service reveal">
-
+<article class="service">
 <div class="num">08</div>
-
-<h3>
-Выезд мастера
-</h3>
-
-<p>
-Выезд для оценки и выполнения работ.
-</p>
-
-<div class="price">
-от 500 ₽
-</div>
-
+<h3>Выезд мастера</h3>
+<p>Выезд для оценки и выполнения работ.</p>
+<div class="price">от 500 ₽</div>
 </article>
 
+</div>
 
 </div>
 
- 
+</section>
+
+
+<!-- =========================
+CALCULATOR
+========================= -->
+
+<section class="calculator-section" id="calculator">
+
+<div class="container">
+
+<div class="calculator-wrapper">
+
+
+<div class="calculator-box">
+
+<h
