@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Сварочная мастерская — сварочные работы, изготовление ворот, калиток, перил и металлических конструкций.">
+<title>Сварочная мастерская — сварочные работы и металлоконструкции</title>
+
+<style>
+:root{
+--green:#123d2a;--green2:#1d5a3d;--red:#d62828;--bg:#f7faf8;
+--light:#e8f1eb;--text:#17231b;--muted:#617066;--white:#fff;
+--border:#d7e3da;--shadow:0 15px 40px rgba(18,61,42,.12);--radius:18px
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+.container{width:min(1180px,calc(100% - 40px));margin:auto}
+
+header{position:fixed;top:0;left:0;width:100%;height:70px;background:rgba(18,61,42,.96);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(255,255,255,.1)}
+.header-inner{height:100%;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px;color:white}
+.logo-mark{width:42px;height:42px;display:grid;place-items:center;background:var(--red);border-radius:10px;font-size:21px}
+.logo strong{display:block;font-size:16px}.logo span{display:block;color:#b9c9bf;font-size:12px}
+.nav{display:flex;gap:28px;color:#dce7df;font-size:15px}.nav a:hover{color:#fff}
+.phone{color:white;font-weight:bold}
+.menu-btn{display:none;width:44px;height:44px;border:0;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:24px}
+
+.sidebar{position:fixed;top:0;right:0;width:min(330px,88vw);height:100vh;padding:90px 25px 30px;background:var(--green);z-index:1200;transform:translateX(100%);transition:.3s;box-shadow:-15px 0 40px rgba(0,0,0,.2)}
+.sidebar.active{transform:translateX(0)}
+.close{position:absolute;top:18px;right:20px;width:42px;height:42px;border:0;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:25px}
+.sidebar a{display:block;padding:17px 5px;color:white;font-size:19px;border-bottom:1px solid rgba(255,255,255,.1)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1100;opacity:0;visibility:hidden;transition:.3s}
+.overlay.active{opacity:1;visibility:visible}
+
+.hero{padding:145px 0 90px;background:linear-gradient(120deg,#f7faf8,#e8f1eb)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center}
+.eyebrow{display:inline-flex;gap:8px;padding:7px 12px;margin-bottom:20px;border-radius:100px;background:#dfece3;color:var(--green);font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:.05em}
+.eyebrow:before{content:"";width:7px;height:7px;margin-top:6px;border-radius:50%;background:var(--red)}
+h1{font-size:clamp(42px,5vw,70px);line-height:1.02;letter-spacing:-.04em;color:#10291d;margin-bottom:22px}
+h1 span{color:var(--red)}
+.hero-text{max-width:610px;margin-bottom:30px;color:var(--muted);font-size:20px}
+.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:10px;font-weight:bold;transition:.2s}
+.btn:hover{transform:translateY(-2px)}
+.primary{background:var(--red);color:#fff;box-shadow:0 8px 20px rgba(214,40,40,.22)}
+.secondary{background:#fff;color:var(--green);border:1px solid var(--border)}
+.features{display:flex;flex-wrap:wrap;gap:18px}.feature{font-size:14px;font-weight:bold;color:var(--green)}.feature:before{content:"✓";margin-right:7px}
+.hero-img{width:100%;height:520px;object-fit:cover;border:6px solid white;border-radius:24px;box-shadow:var(--shadow)}
+.image-wrap{position:relative}
+.badge{position:absolute;left:-20px;bottom:25px;background:#fff;padding:16px 20px;border-radius:14px;box-shadow:var(--shadow)}
+.badge strong{display:block;color:var(--green);font-size:19px}.badge span{color:var(--muted);font-size:13px}
+
+section{padding:100px 0}.light{background:var(--bg)}.green-bg{background:var(--light)}
+.heading{text-align:center;max-width:700px;margin:0 auto 50px}
+.label{color:var(--red);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.heading h2,.about h2,.contact h2{color:#10291d;font-size:clamp(32px,4vw,46px);line-height:1.1;margin-bottom:15px}
+.heading p,.about p,.contact-intro{color:var(--muted);font-size:17px}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{padding:30px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 5px 20px rgba(18,61,42,.05);transition:.2s}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.icon{width:52px;height:52px;display:grid;place-items:center;background:var(--green);color:white;border-radius:13px;font-size:23px;margin-bottom:18px}
+.card h3{color:var(--green);margin-bottom:9px}.card p{color:var(--muted);font-size:15px}
+
+.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:center}
+.about-img{width:100%;height:500px;object-fit:cover;border:5px solid white;border-radius:24px;box-shadow:var(--shadow)}
+.about p{margin-bottom:15px}.list{display:grid;gap:10px;margin-top:24px;list-style:none}.list li{font-weight:bold}.list li:before{content:"✓";color:var(--red);margin-right:10px}
+
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.service{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:.2s}
+.service:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.num{color:#9cac9f;font-weight:bold;font-size:13px;margin-bottom:25px}
+.service h3{color:var(--green);min-height:52px;font-size:18px;margin-bottom:10px}
+.service p{color:var(--muted);font-size:14px;min-height:60px}
+.price{border-top:1px solid var(--border);padding-top:14px;margin-top:15px;color:var(--red);font-weight:bold}
+
+.calculator-section{background:#10291d;color:#fff}
+.calculator-wrapper{display:grid;grid-template-columns:1fr .8fr;gap:35px;align-items:start}
+.calculator-box{background:#fff;color:var(--text);border-radius:24px;padding:30px;box-shadow:var(--shadow)}
+.calculator-title{font-size:30px;color:var(--green);margin-bottom:8px}
+.calculator-description{color:var(--muted);margin-bottom:25px}
+.calc-step{margin-bottom:22px}.calc-step-title{font-size:16px;font-weight:bold;color:var(--green);margin-bottom:9px}
+.calc-select,.calc-input{width:100%;padding:14px 15px;border:1px solid var(--border);border-radius:10px;background:#f7faf8;font-size:16px;color:var(--text);outline:none}
+.calc-select:focus,.calc-input:focus{border-color:var(--red)}
+.dimension-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dimension-box label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.hidden{display:none!important}
+.calc-add{width:100%;padding:15px;border:0;border-radius:11px;background:var(--green);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;transition:.2s}
+.calc-add:hover{background:var(--green2)}.calc-add:active{transform:scale(.98)}
+.selected-title{font-size:20px;font-weight:bold;color:var(--green);margin-top:30px;margin-bottom:12px}
+.selected-list{display:grid;gap:10px}
+.selected-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;background:#f7faf8;border:1px solid var(--border);border-radius:12px}
+.selected-info{min-width:0}.selected-name{font-weight:bold;color:var(--green);font-size:14px}.selected-details{font-size:12px;color:var(--muted);margin-top:3px}
+.selected-price{font-weight:bold;color:var(--red);white-space:nowrap}
+.remove-item{width:32px;height:32px;border:0;border-radius:8px;background:#ffe7e7;color:var(--red);font-size:18px;cursor:pointer;flex-shrink:0}
+.empty-list{padding:15px;border:1px dashed var(--border);border-radius:12px;color:var(--muted);text-align:center;font-size:14px}
+.calc-total{margin-top:20px;padding:20px;border-radius:15px;background:var(--green);color:#fff}
+.calc-total small{display:block;color:#b9c9bf;margin-bottom:3px}.calc-total strong{font-size:34px}
+.clear-button{width:100%;margin-top:10px;padding:13px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--muted);font-weight:bold;cursor:pointer}
+.calculator-info{padding:20px 10px}.calculator-info .label{color:#ff7777}.calculator-info h2{font-size:clamp(32px,4vw,48px);line-height:1.1;margin-bottom:20px}
+.calculator-info p{color:#b9c9bf;font-size:17px;margin-bottom:25px}.calc-benefits{display:grid;gap:14px;list-style:none}
+.calc-benefits li{display:flex;gap:10px;align-items:flex-start;color:#fff}.calc-benefits li span{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--red);font-size:13px;flex-shrink:0}
+
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:250px;gap:15px}
+.work{position:relative;overflow:hidden;border-radius:18px}.work img{width:100%;height:100%;object-fit:cover;transition:.4s}.work:hover img{transform:scale(1.06)}
+.caption{position:absolute;left:10px;right:10px;bottom:10px;padding:9px 11px;border-radius:8px;background:rgba(18,61,42,.88);color:#fff;font-size:13px;font-weight:bold}
+
+.cta{padding:65px 0;background:#10291d;color:#fff}.cta-inner{display:flex;justify-content:space-between;align-items:center;gap:30px}
+.cta h2{font-size:clamp(28px,4vw,42px);line-height:1.1;margin-bottom:8px}.cta p{color:#b9c9bf}.cta .buttons{margin:0}
+
+.contacts-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px}.contact h2{margin-bottom:18px}.contact-intro{margin-bottom:25px}
+.contact-list{display:grid;gap:14px}.contact-card{display:flex;align-items:center;gap:15px;padding:17px;background:#fff;border:1px solid var(--border);border-radius:13px}
+.contact-icon{width:45px;height:45px;display:grid;place-items:center;flex-shrink:0;border-radius:10px;background:var(--green);color:#fff;font-size:19px}
+.contact-card small{display:block;color:var(--muted);font-size:12px}.contact-card a,.contact-card strong{color:var(--green);font-size:16px}
+.map{min-height:390px;display:grid;place-items:center;text-align:center;padding:30px;border-radius:24px;background:linear-gradient(135deg,#dcebe1,#cbded0);border:1px solid var(--border)}
+.map-icon{font-size:50px;margin-bottom:10px}.map h3{color:var(--green);margin-bottom:7px}.map p{color:var(--muted);margin-bottom:20px}
+
+footer{padding:28px 0;background:#0b1e15;color:#9cad9f;font-size:13px}.footer-inner{display:flex;justify-content:space-between;gap:20px}.footer-brand{color:white;font-weight:bold}
+
+@media(max-width:1000px){
+.nav,.phone{display:none}.menu-btn{display:block}.hero-grid{grid-template-columns:1fr}.hero-img{height:430px}
+.about-grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.services{grid-template-columns:repeat(2,1fr)}
+.contacts-grid{grid-template-columns:1fr}.calculator-wrapper{grid-template-columns:1fr}.calculator-info{padding:0}
+}
+@media(max-width:650px){
+.container,.header-inner{width:calc(100% - 30px)}.hero{padding:115px 0 65px}.hero h1{font-size:42px}.hero-text{font-size:17px}
+.buttons{display:grid;grid-template-columns:1fr}.btn{width:100%}.features{display:grid;gap:9px}.hero-img{height:320px;border-radius:18px}.badge{left:15px}
+.cards,.services{grid-template-columns:1fr}section{padding:70px 0}.about-img{height:330px}.gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px;gap:9px}
+.caption{font-size:11px;padding:7px}.cta-inner{display:block}.cta .buttons{margin-top:22px}.footer-inner{display:block;text-align:center}.footer-inner div{margin-bottom:7px}
+.calculator-box{padding:20px}.calculator-title{font-size:26px}.dimension-grid{grid-template-columns:1fr}.selected-item{align-items:flex-start}.selected-price{font-size:13px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container header-inner">
+<a class="logo" href="#home"><div class="logo-mark">⚒</div><div><strong>Сварочная мастерская</strong><span>Сварка • Металлоконструкции</span></div></a>
+<nav class="nav">
+<a href="#about">О нас</a><a href="#services">Услуги</a><a href="#calculator">Калькулятор</a><a href="#works">Работы</a><a href="#contacts">Контакты</a>
+</nav>
+<a class="phone" href="tel:+79992339777">☎ +7 (999) 233-97-77</a>
+<button class="menu-btn" id="menuBtn">☰</button>
+</div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+<button class="close" id="closeBtn">×</button>
+<a href="#home">Главная</a><a href="#about">О нас</a><a href="#services">Услуги</a><a href="#calculator">Калькулятор</a><a href="#works">Наши работы</a><a href="#contacts">Контакты</a>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<main>
+
+<section class="hero" id="home">
+<div class="container"><div class="hero-grid">
+<div>
+<div class="eyebrow">Сварочные работы</div>
+<h1>Надёжные <span>металлоконструкции</span> под вашу задачу</h1>
+<p class="hero-text">Изготавливаем и ремонтируем металлические конструкции. Выполняем сварочные работы аккуратно и в согласованные сроки.</p>
+<div class="buttons">
+<a class="btn primary" href="tel:+79992339777">☎ Позвонить мастеру</a>
+<a class="btn secondary" href="https://t.me/tamletamak76" target="_blank" rel="noopener">Написать в Telegram</a>
+</div>
+<div class="features"><div class="feature">Сварочные работы</div><div class="feature">Изготовление конструкций</div><div class="feature">Выезд мастера</div></div>
+</div>
+<div class="image-wrap">
+<img class="hero-img" src="welding-mig.jpg" alt="Сварочные работы полуавтоматом">
+<div class="badge"><strong>От 500 ₽</strong><span>Начальная стоимость работ</span></div>
+</div>
+</div></div>
+</section>
+
+<section class="light">
+<div class="container">
+<div class="heading"><div class="label">Почему мы</div><h2>Работаем на результат</h2><p>Берёмся как за небольшие сварочные работы, так и за изготовление металлических конструкций.</p></div>
+<div class="cards">
+<article class="card"><div class="icon">⚒</div><h3>Аккуратная работа</h3><p>Внимательно относимся к сварным соединениям, размерам и внешнему виду готового изделия.</p></article>
+<article class="card"><div class="icon">✓</div><h3>Согласованные сроки</h3><p>Перед началом работы обсуждаем задачу, материалы, стоимость и сроки выполнения.</p></article>
+<article class="card"><div class="icon">₽</div><h3>Понятная стоимость</h3><p>Цена зависит от сложности, материалов и объёма работ. Предварительно обсуждаем стоимость.</p></article>
+</div>
+</div>
+</section>
+
+<section class="green-bg" id="about">
+<div class="container"><div class="about-grid">
+<div><img class="about-img" src="welding-electrode.jpg" alt="Сварщик выполняет сварочные работы" loading="lazy"></div>
+<div class="about"><div class="label">О мастерской</div><h2>Металл должен служить долго</h2>
+<p>Наша мастерская занимается сварочными и слесарными работами, изготовлением металлических деталей и конструкций.</p>
+<p>Перед началом работы обсуждаем необходимые размеры, материал, конструкцию и пожелания заказчика.</p>
+<ul class="list"><li>Сварочные работы</li><li>Изготовление металлоконструкций</li><li>Ремонт металлических конструкций</li><li>Изготовление ворот, калиток и перил</li></ul>
+</div>
+</div></div>
+</section>
+
+<section class="light" id="services">
+<div class="container">
+<div class="heading"><div class="label">Услуги</div><h2>Что мы можем сделать</h2><p>Конечная стоимость рассчитывается после уточнения задачи и объёма работ.</p></div>
+<div class="services">
+<article class="service"><div class="num">01</div><h3>Сварочные работы</h3><p>Различные сварочные и слесарные работы.</p><div class="price">от 500 ₽</div></article>
+<article class="service"><div class="num">02</div><h3>Металлические конструкции</h3><p>Изготовление конструкций по вашим размерам.</p><div class="price">от 1 000 ₽</div></article>
+<article class="service"><div class="num">03</div><h3>Металлические детали</h3><p>Изготовление отдельных деталей и элементов.</p><div class="price">от 800 ₽</div></article>
+<article class="service"><div class="num">04</div><h3>Ворота</h3><p>Изготовление металлических ворот.</p><div class="price">от 8 000 ₽</div></article>
+<article class="service"><div class="num">05</div><h3>Калитки</h3><p>Изготовление калиток различных конструкций.</p><div class="price">от 4 000 ₽</div></article>
+<article class="service"><div class="num">06</div><h3>Ремонт конструкций</h3><p>Ремонт и восстановление металлических изделий.</p><div class="price">от 700 ₽</div></article>
+<article class="service"><div class="num">07</div><h3>Перила</h3><p>Изготовление металлических перил.</p><div class="price">от 3 000 ₽</div></article>
+<article class="service"><div class="num">08</div><h3>Выезд мастера</h3><p>Выезд для оценки и выполнения работ.</p><div class="price">от 500 ₽</div></article>
+</div>
+</div>
+</section>
+
+<section class="calculator-section" id="calculator">
+<div class="container"><div class="calculator-wrapper">
+
+<div class="calculator-box">
+<h2 class="calculator-title">Калькулятор стоимости</h2>
+<p class="calculator-description">Добавляйте несколько работ, указывайте размеры и получите предварительную сумму.</p>
+
+<div class="calc-step">
+<div class="calc-step-title">1. Выберите работу</div>
+<select class="calc-select" id="calcType">
+<option value="welding">Сварочные работы — от 500 ₽</option>
+<option value="metal">Металлическая конструкция — от 1 000 ₽</option>
+<option value="detail">Металлическая деталь — от 800 ₽</option>
+<option value="gate">Ворота</option>
+<option value="wicket">Калитка</option>
+<option value="railing">Перила</option>
+<option value="repair">Ремонт конструкции — от 700 ₽</option>
+<option value="visit">Выезд мастера — от 500 ₽</option>
+</select>
+</div>
+
+<div class="calc-step">
+<div class="calc-step-title">2. Размеры / количество</div>
+
+<div class="dimension-grid" id="areaFields">
+<div class="dimension-box">
+<label for="width">Ширина, м</label>
+<input class="calc-input" id="width" type="number" min="0.1" step="0.1" value="3">
+</div>
+<div class="dimension-box">
+<label for="height">Высота, м</label>
+<input class="calc-input" id="height" type="number" min="0.1" step="0.1" value="2">
+</div>
+</div>
+
+<div class="dimension-grid hidden" id="lengthFields">
+<div class="dimension-box">
+<label for="length">Длина, м</label>
+<input class="calc-input" id="length" type="number" min="0.1" step="0.1" value="3">
+</div>
+</div>
+
+<div class="dimension-grid hidden" id="quantityFields">
+<div class="dimension-box">
+<label for="quantity">Количество</label>
+<input class="calc-input" id="quantity" type="number" min="1" step="1" value="1">
+</div>
+</div>
+</div>
+
+<div class="calc-step">
+<div class="calc-step-title">3. Дополнительные работы</div>
+<select class="calc-select" id="extra">
+<option value="0">Без дополнительных работ</option>
+<option value="1000">Резка металла + 1 000 ₽</option>
+<option value="700">Зачистка + 700 ₽</option>
+<option value="2500">Покраска + 2 500 ₽</option>
+<option value="3000">Монтаж + 3 000 ₽</option>
+<option value="1500">Выезд + 1 500 ₽</option>
+</select>
+</div>
+
+<button class="calc-add" id="addCalculation">Добавить в расчёт</button>
+
+<div class="selected-title">Ваш расчёт</div>
+<div class="selected-list" id="selectedList">
+<div class="empty-list">Пока ничего не добавлено</div>
+</div>
+
+<div class="calc-total">
+<small>Предварительная стоимость</small>
+<strong id="totalPrice">0 ₽</strong>
+</div>
+
+<button class="clear-button" id="clearCalculation">Очистить расчёт</button>
+</div>
+
+<div class="calculator-info">
+<div class="label">Расчёт стоимости</div>
+<h2>Соберите заказ прямо на сайте</h2>
+<p>Можно добавить несколько разных работ. Например, ворота + калитку + перила, а затем увидеть их общую предварительную стоимость.</p>
+<ul class="calc-benefits">
+<li><span>✓</span><div>Укажите размеры изделия</div></li>
+<li><span>✓</span><div>Добавьте дополнительные работы</div></li>
+<li><span>✓</span><div>Добавьте несколько позиций</div></li>
+<li><span>✓</span><div>Получите общую сумму</div></li>
+</ul>
+</div>
+
+</div></div>
+</section>
+
+<section class="light" id="works">
+<div class="container">
+<div class="heading"><div class="label">Наши работы</div><h2>Примеры работ</h2><p>Используйте эти изображения как примеры. Позже их можно заменить на реальные фотографии вашей мастерской.</p></div>
+<div class="gallery">
+<div class="work"><img src="welding-mig.jpg" alt="Сварка полуавтоматом"><div class="caption">Сварка полуавтоматом</div></div>
+<div class="work"><img src="welding-electrode.jpg" alt="Сварка электродом"><div class="caption">Сварка электродом</div></div>
+<div class="work"><img src="welding-tig.jpg" alt="Сварка вольфрамовым электродом"><div class="caption">Сварка вольфрамовым электродом</div></div>
+</div>
+</div>
+</section>
+
+<section class="cta">
+<div class="container"><div class="cta-inner">
+<div><h2>Нужна сварка или конструкция?</h2><p>Свяжитесь с мастером и обсудите вашу задачу.</p></div>
+<div class="buttons">
+<a class="btn primary" href="tel:+79992339777">Позвонить</a>
+<a class="btn secondary" href="https://t.me/tamletamak76" target="_blank" rel="noopener">Telegram</a>
+</div>
+</div></div>
+</section>
+
+<section class="light" id="contacts">
+<div class="container"><div class="contacts-grid">
+<div class="contact">
+<div class="label">Контакты</div><h2>Свяжитесь с нами</h2>
+<p class="contact-intro">Позвоните или напишите в мессенджер, чтобы обсудить размеры, материалы и стоимость.</p>
+<div class="contact-list">
+<div class="contact-card"><div class="contact-icon">☎</div><div><small>Телефон</small><a href="tel:+79992339777">+7 (999) 233-97-77</a></div></div>
+<div class="contact-card"><div class="contact-icon">✈</div><div><small>Telegram</small><a href="https://t.me/tamletamak76" target="_blank" rel="noopener">@tamletamak76</a></div></div>
+<div class="contact-card"><div class="contact-icon">VK</div><div><small>ВКонтакте</small><a href="https://vk.ru/hanofkazan" target="_blank" rel="noopener">vk.ru/hanofkazan</a></div></div>
+<div class="contact-card"><div class="contact-icon">⌖</div><div><small>Адрес</small><strong>Город Ярославль, Промышленное ш., 66</strong></div></div>
+</div>
+</div>
+
+<div class="map">
+<div><div class="map-icon">📍</div><h3>Мы находимся в Ярославле</h3><p>Промышленное шоссе, 66</p>
+<a class="btn primary" href="https://www.google.com/maps/search/?api=1&query=промышленное+шоссе+66" target="_blank" rel="noopener">Открыть карту</a></div>
+</div>
+
+</div></div>
+</section>
+
+</main>
+
+<footer>
+<div class="container footer-inner">
+<div class="footer-brand">Сварочная мастерская</div>
+<div>Сварка • Металлоконструкции</div>
+<div>© 2026</div>
+</div>
+</footer>
+
+<script>
+const menuBtn=document.getElementById("menuBtn");
+const closeBtn=document.getElementById("closeBtn");
+const sidebar=document.getElementById("sidebar");
+const overlay=document.getElementById("overlay");
+
+function openMenu(){sidebar.classList.add("active");overlay.classList.add("active")}
+function closeMenu(){sidebar.classList.remove("active");overlay.classList.remove("active")}
+
+menuBtn.addEventListener("click",openMenu);
+closeBtn.addEventListener("click",closeMenu);
+overlay.addEventListener("click",closeMenu);
+
+document.querySelectorAll(".sidebar a").forEach(link=>{
+link.addEventListener("click",closeMenu);
+});
+
+const prices={
+welding:500,
+metal:1000,
+detail:800,
+gatePerM2:4000,
+wicketPerM2:3500,
+railingPerM:3000,
+repair:700,
+visit:500
+};
+
+const minimumPrices={
+gate:8000,
+wicket:4000,
+railing:3000
+};
+
+const names={
+welding:"Сварочные работы",
+metal:"Металлическая конструкция",
+detail:"Металлическая деталь",
+gate:"Ворота",
+wicket:"Калитка",
+railing:"Перила",
+repair:"Ремонт конструкции",
+visit:"Выезд мастера"
+};
+
+const calcType=document.getElementById("calcType");
+const areaFields=document.getElementById("areaFields");
+const lengthFields=document.getElementById("lengthFields");
+const quantityFields=document.getElementById("quantityFields");
+const widthInput=document.getElementById("width");
+const heightInput=document.getElementById("height");
+const lengthInput=document.getElementById("length");
+const quantityInput=document.getElementById("quantity");
+const extraInput=document.getElementById("extra");
+const selectedList=document.getElementById("selectedList");
+const totalPrice=document.getElementById("totalPrice");
+
+let calculations=[];
+
+function updateCalculatorFields(){
+const type=calcType.value;
+areaFields.classList.add("hidden");
+lengthFields.classList.add("hidden");
+quantityFields.classList.add("hidden");
+
+if(type==="gate"||type==="wicket"){
+areaFields.classList.remove("hidden");
+}else if(type==="railing"){
+lengthFields.classList.remove("hidden");
+}else{
+quantityFields.classList.remove("hidden");
+}
+}
+
+calcType.addEventListener("change",updateCalculatorFields);
+
+function money(value){
+return new Intl.NumberFormat("ru-RU").format(Math.round(value))+" ₽";
+}
+
+function calculateItem(){
+const type=calcType.value;
+const extra=Number(extraInput.value)||0;
+let price=0;
+let details="";
+
+if(type==="gate"||type==="wicket"){
+const width=Number(widthInput.value)||0;
+const height=Number(heightInput.value)||0;
+const area=width*height;
+const rate=type==="gate"?prices.gatePerM2:prices.wicketPerM2;
+const calculated=area*rate;
+price=Math.max(calculated,minimumPrices[type])+extra;
+details=`${width} × ${height} м = ${area.toFixed(2)} м²`;
+}else if(type==="railing"){
+const length=Number(lengthInput.value)||0;
+price=Math.max(length*prices.railingPerM,minimumPrices.railing)+extra;
+details=`Длина: ${length} м`;
+}else{
+const quantity=Math.max(1,Number(quantityInput.value)||1);
+price=prices[type]*quantity+extra;
+details=`Количество: ${quantity} шт.`;
+}
+
+if(extra>0){
+details+=" • доп. работы: "+money(extra);
+}
+
+return{
+type,
+name:names[type],
+price,
+details
+};
+}
+
+function renderCalculations(){
+if(calculations.length===0){
+selectedList.innerHTML='<div class="empty-list">Пока ничего не добавлено</div>';
+totalPrice.textContent="0 ₽";
+return;
+}
+
+selectedList.innerHTML="";
+
+calculations.forEach((item,index)=>{
+const row=document.createElement("div");
+row.className="selected-item";
+
+row.innerHTML=`
+<div class="selected-info">
+<div class="selected-name">${item.name}</div>
+<div class="selected-details">${item.details}</div>
+</div>
+<div class="selected-price">${money(item.price)}</div>
+<button class="remove-item" data-index="${index}" aria-label="Удалить">×</button>
+`;
+
+selectedList.appendChild(row);
+});
+
+const total=calculations.reduce((sum,item)=>sum+item.price,0);
+totalPrice.textContent=money(total);
+
+document.querySelectorAll(".remove-item").forEach(button=>{
+button.addEventListener("click",()=>{
+calculations.splice(Number(button.dataset.index),1);
+renderCalculations();
+});
+});
+}
+
+document.getElementById("addCalculation").addEventListener("click",()=>{
+const item=calculateItem();
+
+if(item.price<=0){
+alert("Проверьте размеры или количество.");
+return;
+}
+
+calculations.push(item);
+renderCalculations();
+});
+
+document.getElementById("clearCalculation").addEventListener("click",()=>{
+calculations=[];
+renderCalculations();
+});
+
+updateCalculatorFields();
+renderCalculations();
+</script>
+
+</body>
+</html>
