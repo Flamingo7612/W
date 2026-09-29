@@ -766,17 +766,28 @@ if (orderForm) {
                 }
 
 
-                if (
-                    !data ||
-                    data.success !== true
-                ) {
+               if (error) {
+    throw error;
+}
 
-                    throw new Error(
-                        data?.error ||
-                        "Telegram не подтвердил отправку"
-                    );
-
-                }
+            const {
+    data,
+    error
+} =
+    await supabase.functions.invoke(
+        "send-order",
+        {
+            body: {
+                order_id: order.id,
+                name: name,
+                email: email,
+                phone: phone,
+                service: service,
+                description: description,
+                preferred_date: date
+            }
+        }
+    );
 
 
                 // ==================================
