@@ -49,7 +49,7 @@ if (registerForm) {
                 document.getElementById("registerMessage");
 
 
-            const { data, error } =
+            const { error } =
                 await supabase.auth.signUp({
 
                     email: email,
@@ -76,6 +76,9 @@ if (registerForm) {
                     message.className =
                         "message error";
 
+                    message.style.display =
+                        "block";
+
                 }
 
                 return;
@@ -89,6 +92,9 @@ if (registerForm) {
 
                 message.className =
                     "message success";
+
+                message.style.display =
+                    "block";
 
             }
 
@@ -123,7 +129,7 @@ if (loginForm) {
                 document.getElementById("loginMessage");
 
 
-            const { data, error } =
+            const { error } =
                 await supabase.auth.signInWithPassword({
 
                     email: email,
@@ -142,6 +148,9 @@ if (loginForm) {
 
                     message.className =
                         "message error";
+
+                    message.style.display =
+                        "block";
 
                 }
 
@@ -294,12 +303,10 @@ async function showUser() {
         "block";
 
 
-    // Загружаем заказы пользователя
     await loadOrders(user.id);
 }
 
 
-// Запускаем кабинет
 showUser();
 
 
@@ -334,7 +341,6 @@ if (profileForm) {
 
 
             const {
-                data,
                 error
             } = await supabase.auth.updateUser({
 
@@ -356,6 +362,9 @@ if (profileForm) {
                     message.className =
                         "message error";
 
+                    message.style.display =
+                        "block";
+
                 }
 
                 return;
@@ -369,6 +378,9 @@ if (profileForm) {
 
                 message.className =
                     "message success";
+
+                message.style.display =
+                    "block";
 
             }
 
@@ -561,7 +573,7 @@ setupPhoneMask(
 
 
 // ==========================================
-// СОЗДАНИЕ ЗАКАЗА
+// СОЗДАНИЕ И ОТПРАВКА ЗАКАЗА
 // ==========================================
 
 const orderForm =
@@ -613,8 +625,6 @@ if (orderForm) {
                 )?.value.trim();
 
 
-            // Получаем пользователя
-
             const {
                 data: {
                     session
@@ -630,6 +640,9 @@ if (orderForm) {
 
                 message.className =
                     "error";
+
+                message.style.display =
+                    "block";
 
                 return;
             }
@@ -649,13 +662,15 @@ if (orderForm) {
                 "Не указан";
 
 
-            // Блокируем кнопку
-
             button.disabled =
                 true;
 
             button.textContent =
                 "⏳ Сохраняем заказ...";
+
+
+            message.textContent =
+                "";
 
             message.style.display =
                 "none";
@@ -664,7 +679,7 @@ if (orderForm) {
             try {
 
                 // ==================================
-                // 1. СОХРАНЯЕМ ЗАКАЗ В SUPABASE
+                // СОХРАНЯЕМ ЗАКАЗ
                 // ==================================
 
                 const {
@@ -702,29 +717,20 @@ if (orderForm) {
 
 
                 if (insertError) {
-
                     throw insertError;
-
                 }
 
 
-                console.log(
-                    "Заказ сохранён:",
-                    order
-                );
-
-
                 // ==================================
-                // 2. ОТПРАВЛЯЕМ ЗАКАЗ В TELEGRAM
+                // TELEGRAM
                 // ==================================
 
                 button.textContent =
-                    "📱 Отправляем в Telegram...";
+                    "📱 Отправляем...";
 
 
                 const {
-                    data,
-                    error
+                    error: telegramError
                 } =
                     await supabase.functions.invoke(
                         "send-order",
@@ -759,39 +765,13 @@ if (orderForm) {
                     );
 
 
-                if (error) {
-
-                    throw error;
-
+                if (telegramError) {
+                    throw telegramError;
                 }
 
 
-               if (error) {
-    throw error;
-}
-
-            const {
-    data,
-    error
-} =
-    await supabase.functions.invoke(
-        "send-order",
-        {
-            body: {
-                order_id: order.id,
-                name: name,
-                email: email,
-                phone: phone,
-                service: service,
-                description: description,
-                preferred_date: date
-            }
-        }
-    );
-
-
                 // ==================================
-                // 3. УСПЕХ
+                // УСПЕШНО
                 // ==================================
 
                 message.textContent =
@@ -800,22 +780,30 @@ if (orderForm) {
                 message.className =
                     "success";
 
+                message.style.display =
+                    "block";
+
+                message.hidden =
+                    false;
+
 
                 orderForm.reset();
 
 
-                // Возвращаем телефон
-
                 if (phone) {
 
-                    document.getElementById(
-                        "orderPhone"
-                    ).value = phone;
+                    const orderPhoneInput =
+                        document.getElementById(
+                            "orderPhone"
+                        );
+
+                    if (orderPhoneInput) {
+                        orderPhoneInput.value =
+                            phone;
+                    }
 
                 }
 
-
-                // Обновляем список заказов
 
                 await loadOrders(user.id);
 
@@ -829,10 +817,16 @@ if (orderForm) {
 
 
                 message.textContent =
-                    "❌ Не удалось отправить заказ. Проверьте подключение и попробуйте ещё раз.";
+                    "❌ Не удалось отправить заказ. Попробуйте ещё раз.";
 
                 message.className =
                     "error";
+
+                message.style.display =
+                    "block";
+
+                message.hidden =
+                    false;
 
             }
 
@@ -850,7 +844,7 @@ if (orderForm) {
 
 
 // ==========================================
-// ЗАГРУЗКА МОИХ ЗАКАЗОВ
+// МОИ ЗАКАЗЫ
 // ==========================================
 
 async function loadOrders(userId) {
@@ -860,9 +854,6 @@ async function loadOrders(userId) {
             "ordersList"
         );
 
-
-    // Если блока ещё нет в account.html,
-    // просто ничего не делаем.
 
     if (!ordersList) {
         return;
@@ -941,10 +932,8 @@ async function loadOrders(userId) {
                     order.status ===
                     "В работе"
                 ) {
-
                     statusClass =
                         "status-work";
-
                 }
 
 
@@ -952,10 +941,8 @@ async function loadOrders(userId) {
                     order.status ===
                     "Выполнен"
                 ) {
-
                     statusClass =
                         "status-done";
-
                 }
 
 
@@ -963,10 +950,8 @@ async function loadOrders(userId) {
                     order.status ===
                     "Отменён"
                 ) {
-
                     statusClass =
                         "status-cancel";
-
                 }
 
 
@@ -994,9 +979,15 @@ async function loadOrders(userId) {
 
                         <div class="order-history-date">
                             📅 Желаемая дата:
-                            ${order.preferred_date
-                                ? escapeHtml(formatDate(order.preferred_date))
-                                : "Не указана"}
+                            ${
+                                order.preferred_date
+                                    ? escapeHtml(
+                                        formatDate(
+                                            order.preferred_date
+                                        )
+                                    )
+                                    : "Не указана"
+                            }
                         </div>
 
 
@@ -1010,7 +1001,9 @@ async function loadOrders(userId) {
                             order.description
                                 ? `
                                     <div class="order-history-description">
-                                        📝 ${escapeHtml(order.description)}
+                                        📝 ${escapeHtml(
+                                            order.description
+                                        )}
                                     </div>
                                   `
                                 : ""
