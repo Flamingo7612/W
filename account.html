@@ -2,6 +2,7 @@
 <html lang="ru">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -170,10 +171,11 @@ main{
 
 
 /* ============================= */
-/* PROFILE CARD */
+/* CARDS */
 /* ============================= */
 
-.profile-card{
+.profile-card,
+.order-card{
     background:#fff;
 
     border:1px solid var(--border);
@@ -185,7 +187,9 @@ main{
 }
 
 
-/* верхняя зелёная часть */
+/* ============================= */
+/* PROFILE TOP */
+/* ============================= */
 
 .profile-top{
     background:#10291d;
@@ -199,9 +203,6 @@ main{
 
     gap:20px;
 }
-
-
-/* аватар */
 
 .avatar{
     width:75px;
@@ -224,7 +225,6 @@ main{
     border:4px solid rgba(255,255,255,.15);
 }
 
-
 .profile-top h2{
     font-size:27px;
     margin-bottom:5px;
@@ -237,7 +237,7 @@ main{
 
 
 /* ============================= */
-/* INFO */
+/* PROFILE CONTENT */
 /* ============================= */
 
 .profile-content{
@@ -314,6 +314,11 @@ main{
     margin-bottom:22px;
 }
 
+
+/* ============================= */
+/* FORMS */
+/* ============================= */
+
 .form-group{
     margin-bottom:18px;
 }
@@ -330,7 +335,9 @@ main{
     margin-bottom:7px;
 }
 
-.form-group input{
+.form-group input,
+.form-group select,
+.form-group textarea{
     width:100%;
 
     padding:14px 15px;
@@ -348,12 +355,23 @@ main{
     outline:none;
 
     transition:.2s;
+
+    font-family:Arial,sans-serif;
 }
 
-.form-group input:focus{
+.form-group textarea{
+    resize:vertical;
+    min-height:130px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
     border-color:var(--red);
 
     background:#fff;
+
+    box-shadow:0 0 0 3px rgba(214,40,40,.08);
 }
 
 
@@ -429,6 +447,66 @@ main{
 
 
 /* ============================= */
+/* ORDER CARD */
+/* ============================= */
+
+.order-card{
+    margin-top:35px;
+    padding:35px;
+}
+
+.order-card h2{
+    color:var(--green);
+
+    font-size:28px;
+
+    margin-bottom:8px;
+}
+
+.order-subtitle{
+    color:var(--muted);
+
+    font-size:14px;
+
+    margin-bottom:25px;
+}
+
+.order-button{
+    width:100%;
+
+    min-height:54px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:var(--red);
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    box-shadow:0 8px 20px rgba(214,40,40,.22);
+}
+
+.order-button:hover{
+    transform:translateY(-2px);
+}
+
+.order-button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+    transform:none;
+}
+
+
+/* ============================= */
 /* MESSAGE */
 /* ============================= */
 
@@ -455,6 +533,41 @@ main{
 }
 
 .message.error{
+    display:block;
+
+    background:#ffe7e7;
+
+    color:var(--red);
+}
+
+
+/* ============================= */
+/* ORDER MESSAGE */
+/* ============================= */
+
+#orderMessage{
+    display:none;
+
+    margin-top:15px;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:bold;
+}
+
+#orderMessage.success{
+    display:block;
+
+    background:#e8f1eb;
+
+    color:var(--green);
+}
+
+#orderMessage.error{
     display:block;
 
     background:#ffe7e7;
@@ -568,6 +681,14 @@ main{
         grid-template-columns:1fr;
     }
 
+    .order-card{
+        padding:25px;
+    }
+
+    .order-card h2{
+        font-size:24px;
+    }
+
     .logout-area{
         display:block;
     }
@@ -609,8 +730,11 @@ main{
 <div class="logo-mark">⚒</div>
 
 <div>
+
 <strong>Сварочная мастерская</strong>
+
 <span>Сварка • Металлоконструкции</span>
+
 </div>
 
 </a>
@@ -674,13 +798,16 @@ main{
 <div id="profile">
 
 
+<!-- ============================= -->
+<!-- PROFILE CARD -->
+<!-- ============================= -->
+
 <div class="profile-card">
 
 
 <!-- GREEN HEADER -->
 
 <div class="profile-top">
-
 
 <div class="avatar" id="avatar">
 ?
@@ -698,7 +825,6 @@ main{
 </p>
 
 </div>
-
 
 </div>
 
@@ -774,7 +900,7 @@ Email
 
 
 
-<!-- EDIT -->
+<!-- EDIT PROFILE -->
 
 <h3 class="edit-title">
 Редактировать профиль
@@ -813,12 +939,12 @@ required
 </label>
 
 <input
-    id="editPhone"
-    type="tel"
-    inputmode="numeric"
-    autocomplete="tel"
-    placeholder="+7 (999) 123-45-67"
-    maxlength="18"
+id="editPhone"
+type="tel"
+inputmode="numeric"
+autocomplete="tel"
+placeholder="+7 (999) 123-45-67"
+maxlength="18"
 >
 
 </div>
@@ -848,11 +974,151 @@ class="message"
 </div>
 
 
+</div>
 
+</div>
+
+
+
+<!-- ============================= -->
+<!-- ORDER CARD -->
+<!-- ============================= -->
+
+<div class="order-card">
+
+<h2>
+📦 Сделать заказ
+</h2>
+
+<p class="order-subtitle">
+Опишите, какая работа вам нужна, и отправьте заявку.
+Мы свяжемся с вами для уточнения деталей.
+</p>
+
+
+<form id="orderForm">
+
+
+<div class="form-group">
+
+<label for="orderService">
+Что нужно сделать?
+</label>
+
+<select id="orderService" required>
+
+<option value="">
+Выберите услугу
+</option>
+
+<option value="Сварочные работы">
+Сварочные работы
+</option>
+
+<option value="Изготовление ворот">
+Изготовление ворот
+</option>
+
+<option value="Изготовление калитки">
+Изготовление калитки
+</option>
+
+<option value="Изготовление перил">
+Изготовление перил
+</option>
+
+<option value="Металлоконструкции">
+Металлоконструкции
+</option>
+
+<option value="Ремонт металла">
+Ремонт металла
+</option>
+
+<option value="Другое">
+Другое
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label for="orderPhone">
+Телефон
+</label>
+
+<input
+id="orderPhone"
+type="tel"
+inputmode="numeric"
+autocomplete="tel"
+placeholder="+7 (999) 123-45-67"
+maxlength="18"
+required
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label for="orderDate">
+Желаемая дата
+</label>
+
+<input
+id="orderDate"
+type="date"
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label for="orderDescription">
+Опишите заказ
+</label>
+
+<textarea
+id="orderDescription"
+rows="5"
+placeholder="Например: нужны ворота 3 метра шириной и 2 метра высотой..."
+required
+></textarea>
+
+</div>
+
+
+
+<button
+type="submit"
+class="order-button"
+>
+📩 Отправить заказ
+</button>
+
+
+<div id="orderMessage"></div>
+
+
+</form>
+
+</div>
+
+
+
+<!-- ============================= -->
 <!-- LOGOUT -->
+<!-- ============================= -->
 
 <div class="logout-area">
-
 
 <div class="logout-text">
 
@@ -866,76 +1132,7 @@ class="message"
 
 </div>
 
-<!-- ФОРМА ЗАКАЗА -->
-<div class="profile-card order-card">
 
-    <h2>📦 Сделать заказ</h2>
-
-    <p class="order-subtitle">
-        Опиши, какая работа тебе нужна, и мы свяжемся с тобой.
-    </p>
-
-    <form id="orderForm">
-
-        <div class="form-group">
-            <label for="orderService">Что нужно сделать?</label>
-
-            <select id="orderService" required>
-                <option value="">Выберите услугу</option>
-                <option value="Сварочные работы">Сварочные работы</option>
-                <option value="Ворота">Изготовление ворот</option>
-                <option value="Калитка">Изготовление калитки</option>
-                <option value="Перила">Изготовление перил</option>
-                <option value="Металлоконструкции">Металлоконструкции</option>
-                <option value="Ремонт">Ремонт металла</option>
-                <option value="Другое">Другое</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="orderPhone">Телефон</label>
-
-            <input
-                id="orderPhone"
-                type="tel"
-                inputmode="numeric"
-                placeholder="+7 (999) 123-45-67"
-                maxlength="18"
-                required
-            >
-        </div>
-
-        <div class="form-group">
-            <label for="orderDate">Желаемая дата</label>
-
-            <input
-                id="orderDate"
-                type="date"
-            >
-        </div>
-
-        <div class="form-group">
-            <label for="orderDescription">
-                Опишите заказ
-            </label>
-
-            <textarea
-                id="orderDescription"
-                rows="5"
-                placeholder="Например: нужны ворота 3 метра шириной и 2 метра высотой..."
-                required
-            ></textarea>
-        </div>
-
-        <button type="submit" class="order-button">
-            📩 Отправить заказ
-        </button>
-
-        <div id="orderMessage"></div>
-
-    </form>
-
-</div>
 <button
 id="logoutButton"
 class="btn btn-green"
@@ -944,17 +1141,10 @@ type="button"
 🚪 Выйти
 </button>
 
-
 </div>
 
 
 </div>
-
-</div>
-
-
-</div>
-
 
 </div>
 
@@ -962,16 +1152,6 @@ type="button"
 
 
 
-<input
-    id="editPhone"
-    type="tel"
-    inputmode="numeric"
-    autocomplete="tel"
-    placeholder="+7 (999) 123-45-67"
-    maxlength="18"
->
-    
-<script type="module" src="script.js"></script>
 <script type="module" src="script.js"></script>
 
 </body>
