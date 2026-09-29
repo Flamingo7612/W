@@ -866,7 +866,76 @@ class="message"
 
 </div>
 
+<!-- ФОРМА ЗАКАЗА -->
+<div class="profile-card order-card">
 
+    <h2>📦 Сделать заказ</h2>
+
+    <p class="order-subtitle">
+        Опиши, какая работа тебе нужна, и мы свяжемся с тобой.
+    </p>
+
+    <form id="orderForm">
+
+        <div class="form-group">
+            <label for="orderService">Что нужно сделать?</label>
+
+            <select id="orderService" required>
+                <option value="">Выберите услугу</option>
+                <option value="Сварочные работы">Сварочные работы</option>
+                <option value="Ворота">Изготовление ворот</option>
+                <option value="Калитка">Изготовление калитки</option>
+                <option value="Перила">Изготовление перил</option>
+                <option value="Металлоконструкции">Металлоконструкции</option>
+                <option value="Ремонт">Ремонт металла</option>
+                <option value="Другое">Другое</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="orderPhone">Телефон</label>
+
+            <input
+                id="orderPhone"
+                type="tel"
+                inputmode="numeric"
+                placeholder="+7 (999) 123-45-67"
+                maxlength="18"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="orderDate">Желаемая дата</label>
+
+            <input
+                id="orderDate"
+                type="date"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="orderDescription">
+                Опишите заказ
+            </label>
+
+            <textarea
+                id="orderDescription"
+                rows="5"
+                placeholder="Например: нужны ворота 3 метра шириной и 2 метра высотой..."
+                required
+            ></textarea>
+        </div>
+
+        <button type="submit" class="order-button">
+            📩 Отправить заказ
+        </button>
+
+        <div id="orderMessage"></div>
+
+    </form>
+
+</div>
 <button
 id="logoutButton"
 class="btn btn-green"
