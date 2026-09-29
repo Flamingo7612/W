@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Личный кабинет</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .block {
+            background: #1d1d1d;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #168f50;
+            color: white;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        #account {
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>Личный кабинет</h1>
+
+
+    <!-- РЕГИСТРАЦИЯ -->
+
+    <div class="block" id="registerBlock">
+
+        <h2>Регистрация</h2>
+
+        <form id="registerForm">
+
+            <input
+                id="registerName"
+                type="text"
+                placeholder="Ваше имя"
+                required
+            >
+
+            <input
+                id="registerEmail"
+                type="email"
+                placeholder="Email"
+                required
+            >
+
+            <input
+                id="registerPassword"
+                type="password"
+                placeholder="Пароль"
+                required
+            >
+
+            <button type="submit">
+                Зарегистрироваться
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ВХОД -->
+
+    <div class="block" id="loginBlock">
+
+        <h2>Вход</h2>
+
+        <form id="loginForm">
+
+            <input
+                id="loginEmail"
+                type="email"
+                placeholder="Email"
+                required
+            >
+
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="Пароль"
+                required
+            >
+
+            <button type="submit">
+                Войти
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ЛИЧНЫЙ КАБИНЕТ -->
+
+    <div class="block" id="account">
+
+        <h2>Здравствуйте!</h2>
+
+        <p style="margin-top: 15px;">
+            Имя:
+            <strong id="userName"></strong>
+        </p>
+
+        <p style="margin-top: 10px;">
+            Email:
+            <strong id="userEmail"></strong>
+        </p>
+
+        <button id="logoutButton">
+            Выйти
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<script type="module" src="script.js"></script>
+
+</body>
+
+</html>
