@@ -856,3 +856,188 @@ supabase.auth.onAuthStateChange(
 
     }
 );
+// ========================================
+// МАСКА ТЕЛЕФОНА
+// ========================================
+
+const phoneInput =
+    document.getElementById("editPhone");
+
+
+if (phoneInput) {
+
+    console.log("✅ Маска телефона подключена");
+
+
+    // Форматирование номера
+    function formatPhone(value) {
+
+        // Оставляем только цифры
+        let digits =
+            value.replace(/\D/g, "");
+
+
+        // Если пользователь ввёл 8XXXXXXXXXX
+        if (digits.startsWith("8")) {
+
+            digits =
+                "7" +
+                digits.substring(1);
+
+        }
+
+
+        // Если пользователь вставил номер без 7
+        if (!digits.startsWith("7")) {
+
+            digits =
+                "7" +
+                digits;
+
+        }
+
+
+        // Максимум 11 цифр
+        digits =
+            digits.substring(0, 11);
+
+
+        // Только цифры после +7
+        const number =
+            digits.substring(1);
+
+
+        let result =
+            "+7";
+
+
+        // 999
+        if (number.length > 0) {
+
+            result +=
+                " (" +
+                number.substring(0, 3);
+
+        }
+
+
+        // )
+        if (number.length >= 3) {
+
+            result +=
+                ")";
+
+        }
+
+
+        // 123
+        if (number.length > 3) {
+
+            result +=
+                " " +
+                number.substring(3, 6);
+
+        }
+
+
+        // -45
+        if (number.length > 6) {
+
+            result +=
+                "-" +
+                number.substring(6, 8);
+
+        }
+
+
+        // -67
+        if (number.length > 8) {
+
+            result +=
+                "-" +
+                number.substring(8, 10);
+
+        }
+
+
+        return result;
+
+    }
+
+
+    // ========================================
+    // НАЖАЛИ НА ПОЛЕ
+    // ========================================
+
+    phoneInput.addEventListener(
+        "focus",
+        function() {
+
+            if (
+                phoneInput.value === ""
+            ) {
+
+                phoneInput.value =
+                    "+7 ";
+
+            }
+
+        }
+    );
+
+
+    // ========================================
+    // ПЕЧАТАЕМ
+    // ========================================
+
+    phoneInput.addEventListener(
+        "input",
+        function() {
+
+            phoneInput.value =
+                formatPhone(
+                    phoneInput.value
+                );
+
+        }
+    );
+
+
+    // ========================================
+    // ВСТАВКА НОМЕРА
+    // ========================================
+
+    phoneInput.addEventListener(
+        "paste",
+        function() {
+
+            setTimeout(
+                function() {
+
+                    phoneInput.value =
+                        formatPhone(
+                            phoneInput.value
+                        );
+
+                },
+                0
+            );
+
+        }
+    );
+
+
+    // ========================================
+    // ЕСЛИ НОМЕР УЖЕ СОХРАНЁН
+    // ========================================
+
+    if (phoneInput.value) {
+
+        phoneInput.value =
+            formatPhone(
+                phoneInput.value
+            );
+
+    }
+
+}
