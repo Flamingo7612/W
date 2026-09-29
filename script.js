@@ -20,7 +20,7 @@ const supabase = createClient(
 );
 
 
-console.log("Supabase подключён");
+console.log("✅ Supabase подключён");
 
 
 // ========================================
@@ -62,9 +62,7 @@ if (registerForm) {
 
             if (!name || !email || !password) {
 
-                alert(
-                    "Заполни все поля."
-                );
+                alert("Заполни все поля.");
 
                 return;
             }
@@ -106,6 +104,7 @@ if (registerForm) {
                 data
             );
 
+
             console.log(
                 "SIGN UP ERROR:",
                 error
@@ -137,7 +136,7 @@ if (registerForm) {
 
                 alert(
                     "Регистрация выполнена!\n\n" +
-                    "Проверьте почту и подтвердите email."
+                    "Проверь почту и подтверди email."
                 );
 
             } else {
@@ -150,9 +149,6 @@ if (registerForm) {
 
 
             registerForm.reset();
-
-
-            showUser();
 
         }
     );
@@ -218,6 +214,7 @@ if (loginForm) {
                 data
             );
 
+
             console.log(
                 "LOGIN ERROR:",
                 error
@@ -252,37 +249,10 @@ if (loginForm) {
 
 
 // ========================================
-// ЛИЧНЫЙ КАБИНЕТ
+// ПОКАЗ ЛИЧНОГО КАБИНЕТА
 // ========================================
 
 async function showUser() {
-
-    const {
-        data,
-        error
-    } =
-        await supabase.auth.getUser();
-
-
-    if (error) {
-
-        console.error(
-            "Ошибка получения пользователя:",
-            error
-        );
-
-    }
-
-
-    const user =
-        data
-            ? data.user
-            : null;
-
-
-    // ========================================
-    // ЭЛЕМЕНТЫ ACCOUNT.HTML
-    // ========================================
 
     const loading =
         document.getElementById("loading");
@@ -293,32 +263,360 @@ async function showUser() {
 
 
     // ========================================
-    // ЕСЛИ МЫ НА ACCOUNT.HTML
+    // ACCOUNT.HTML
     // ========================================
 
     if (loading && profile) {
 
-        loading.style.display = "none";
+        loading.style.display = "block";
+
+        profile.style.display = "none";
+
+    }
 
 
-        if (!user) {
-
-            profile.style.display = "none";
-
-
-            loading.style.display = "block";
+    console.log(
+        "🔎 Проверяем сохранённую сессию..."
+    );
 
 
-            loading.innerHTML = `
-                <p style="margin-bottom:15px;">
-                    Вы не вошли в аккаунт.
+    // ========================================
+    // ПОЛУЧАЕМ SESSION
+    // ========================================
+
+    const {
+        data: sessionData,
+        error: sessionError
+    } =
+        await supabase.auth.getSession();
+
+
+    console.log(
+        "SESSION:",
+        sessionData
+    );
+
+
+    console.log(
+        "SESSION ERROR:",
+        sessionError
+    );
+
+
+    if (sessionError) {
+
+        console.error(
+            sessionError
+        );
+
+        showNotLoggedIn(
+            "Ошибка проверки авторизации."
+        );
+
+        return;
+    }
+
+
+    const session =
+        sessionData
+            ? sessionData.session
+            : null;
+
+
+    // ========================================
+    // НЕТ СЕССИИ
+    // ========================================
+
+    if (!session) {
+
+        console.log(
+            "❌ Пользователь не вошёл."
+        );
+
+
+        showNotLoggedIn(
+            "Вы не вошли в аккаунт."
+        );
+
+
+        return;
+    }
+
+
+    // ========================================
+    // ПОЛЬЗОВАТЕЛЬ
+    // ========================================
+
+    const user =
+        session.user;
+
+
+    console.log(
+        "✅ Пользователь найден:",
+        user
+    );
+
+
+    // ========================================
+    // ПОКАЗЫВАЕМ ПРОФИЛЬ
+    // ========================================
+
+    if (loading) {
+
+        loading.style.display =
+            "none";
+
+    }
+
+
+    if (profile) {
+
+        profile.style.display =
+            "block";
+
+    }
+
+
+    // ========================================
+    // ДАННЫЕ
+    // ========================================
+
+    const metadata =
+        user.user_metadata || {};
+
+
+    const name =
+        metadata.name ||
+        "Пользователь";
+
+
+    const phone =
+        metadata.phone ||
+        "";
+
+
+    // ========================================
+    // ИМЯ
+    // ========================================
+
+    const profileName =
+        document.getElementById(
+            "profileName"
+        );
+
+
+    const infoName =
+        document.getElementById(
+            "infoName"
+        );
+
+
+    const editName =
+        document.getElementById(
+            "editName"
+        );
+
+
+    if (profileName) {
+
+        profileName.textContent =
+            name;
+
+    }
+
+
+    if (infoName) {
+
+        infoName.textContent =
+            name;
+
+    }
+
+
+    if (editName) {
+
+        editName.value =
+            name;
+
+    }
+
+
+    // ========================================
+    // EMAIL
+    // ========================================
+
+    const infoEmail =
+        document.getElementById(
+            "infoEmail"
+        );
+
+
+    if (infoEmail) {
+
+        infoEmail.textContent =
+            user.email || "—";
+
+    }
+
+
+    // ========================================
+    // ТЕЛЕФОН
+    // ========================================
+
+    const infoPhone =
+        document.getElementById(
+            "infoPhone"
+        );
+
+
+    const editPhone =
+        document.getElementById(
+            "editPhone"
+        );
+
+
+    if (infoPhone) {
+
+        infoPhone.textContent =
+            phone || "Не указан";
+
+    }
+
+
+    if (editPhone) {
+
+        editPhone.value =
+            phone;
+
+    }
+
+
+    // ========================================
+    // АВАТАР
+    // ========================================
+
+    const avatar =
+        document.getElementById(
+            "avatar"
+        );
+
+
+    if (avatar) {
+
+        avatar.textContent =
+            name
+                .charAt(0)
+                .toUpperCase();
+
+    }
+
+
+    // ========================================
+    // ДАТА РЕГИСТРАЦИИ
+    // ========================================
+
+    const infoDate =
+        document.getElementById(
+            "infoDate"
+        );
+
+
+    if (
+        infoDate &&
+        user.created_at
+    ) {
+
+        const date =
+            new Date(
+                user.created_at
+            );
+
+
+        infoDate.textContent =
+            date.toLocaleDateString(
+                "ru-RU",
+                {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                }
+            );
+
+    }
+
+}
+
+
+// ========================================
+// ЕСЛИ НЕТ АВТОРИЗАЦИИ
+// ========================================
+
+function showNotLoggedIn(
+    message
+) {
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+
+    const profile =
+        document.getElementById(
+            "profile"
+        );
+
+
+    if (profile) {
+
+        profile.style.display =
+            "none";
+
+    }
+
+
+    if (loading) {
+
+        loading.style.display =
+            "block";
+
+
+        loading.innerHTML = `
+
+            <div style="
+                background:white;
+                padding:30px;
+                border-radius:18px;
+                border:1px solid #d7e3da;
+                box-shadow:0 15px 40px rgba(18,61,42,.12);
+            ">
+
+                <div style="
+                    font-size:42px;
+                    margin-bottom:15px;
+                ">
+                    👤
+                </div>
+
+                <h2 style="
+                    color:#123d2a;
+                    margin-bottom:10px;
+                ">
+                    ${message}
+                </h2>
+
+                <p style="
+                    color:#617066;
+                    margin-bottom:20px;
+                ">
+                    Войдите в аккаунт, чтобы открыть личный кабинет.
                 </p>
 
                 <a
                     href="index.html"
                     style="
-                        display:inline-flex;
-                        padding:13px 20px;
+                        display:inline-block;
+                        padding:13px 22px;
                         background:#d62828;
                         color:white;
                         border-radius:10px;
@@ -327,273 +625,10 @@ async function showUser() {
                 >
                     Вернуться на сайт
                 </a>
-            `;
 
-            return;
-        }
+            </div>
 
-
-        profile.style.display = "block";
-
-
-        // ========================================
-        // ДАННЫЕ ПОЛЬЗОВАТЕЛЯ
-        // ========================================
-
-        const metadata =
-            user.user_metadata || {};
-
-
-        const name =
-            metadata.name ||
-            "Пользователь";
-
-
-        const phone =
-            metadata.phone ||
-            "";
-
-
-        // ========================================
-        // ИМЯ
-        // ========================================
-
-        const profileName =
-            document.getElementById(
-                "profileName"
-            );
-
-
-        const infoName =
-            document.getElementById(
-                "infoName"
-            );
-
-
-        const editName =
-            document.getElementById(
-                "editName"
-            );
-
-
-        if (profileName) {
-
-            profileName.textContent =
-                name;
-
-        }
-
-
-        if (infoName) {
-
-            infoName.textContent =
-                name;
-
-        }
-
-
-        if (editName) {
-
-            editName.value =
-                name;
-
-        }
-
-
-        // ========================================
-        // EMAIL
-        // ========================================
-
-        const infoEmail =
-            document.getElementById(
-                "infoEmail"
-            );
-
-
-        if (infoEmail) {
-
-            infoEmail.textContent =
-                user.email || "—";
-
-        }
-
-
-        // ========================================
-        // ТЕЛЕФОН
-        // ========================================
-
-        const infoPhone =
-            document.getElementById(
-                "infoPhone"
-            );
-
-
-        const editPhone =
-            document.getElementById(
-                "editPhone"
-            );
-
-
-        if (infoPhone) {
-
-            infoPhone.textContent =
-                phone || "Не указан";
-
-        }
-
-
-        if (editPhone) {
-
-            editPhone.value =
-                phone;
-
-        }
-
-
-        // ========================================
-        // АВАТАР
-        // ========================================
-
-        const avatar =
-            document.getElementById(
-                "avatar"
-            );
-
-
-        if (avatar) {
-
-            avatar.textContent =
-                name
-                    .charAt(0)
-                    .toUpperCase();
-
-        }
-
-
-        // ========================================
-        // ДАТА РЕГИСТРАЦИИ
-        // ========================================
-
-        const infoDate =
-            document.getElementById(
-                "infoDate"
-            );
-
-
-        if (infoDate && user.created_at) {
-
-            const date =
-                new Date(
-                    user.created_at
-                );
-
-
-            infoDate.textContent =
-                date.toLocaleDateString(
-                    "ru-RU",
-                    {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric"
-                    }
-                );
-
-        }
-
-    }
-
-
-    // ========================================
-    // СТАРЫЙ БЛОК ACCOUNT
-    // ДЛЯ СОВМЕСТИМОСТИ
-    // ========================================
-
-    const oldAccount =
-        document.getElementById("account");
-
-
-    const loginBlock =
-        document.getElementById("loginBlock");
-
-
-    const registerBlock =
-        document.getElementById("registerBlock");
-
-
-    const userName =
-        document.getElementById("userName");
-
-
-    const userEmail =
-        document.getElementById("userEmail");
-
-
-    if (user) {
-
-        if (oldAccount) {
-
-            oldAccount.style.display =
-                "block";
-
-        }
-
-
-        if (loginBlock) {
-
-            loginBlock.style.display =
-                "none";
-
-        }
-
-
-        if (registerBlock) {
-
-            registerBlock.style.display =
-                "none";
-
-        }
-
-
-        if (userName) {
-
-            userName.textContent =
-                user.user_metadata?.name ||
-                "Пользователь";
-
-        }
-
-
-        if (userEmail) {
-
-            userEmail.textContent =
-                user.email || "";
-
-        }
-
-    } else {
-
-        if (oldAccount) {
-
-            oldAccount.style.display =
-                "none";
-
-        }
-
-
-        if (loginBlock) {
-
-            loginBlock.style.display =
-                "block";
-
-        }
-
-
-        if (registerBlock) {
-
-            registerBlock.style.display =
-                "block";
-
-        }
+        `;
 
     }
 
@@ -633,12 +668,6 @@ if (profileForm) {
                     .trim();
 
 
-            const message =
-                document.getElementById(
-                    "message"
-                );
-
-
             if (!name) {
 
                 showMessage(
@@ -651,7 +680,7 @@ if (profileForm) {
 
 
             console.log(
-                "Сохраняем профиль..."
+                "💾 Сохраняем профиль..."
             );
 
 
@@ -686,11 +715,6 @@ if (profileForm) {
 
             if (error) {
 
-                console.error(
-                    error
-                );
-
-
                 showMessage(
                     "Ошибка сохранения: " +
                     error.message,
@@ -707,7 +731,14 @@ if (profileForm) {
             );
 
 
-            showUser();
+            setTimeout(
+                function() {
+
+                    showUser();
+
+                },
+                300
+            );
 
         }
     );
@@ -716,7 +747,7 @@ if (profileForm) {
 
 
 // ========================================
-// СООБЩЕНИЕ
+// СООБЩЕНИЯ
 // ========================================
 
 function showMessage(
@@ -772,7 +803,6 @@ if (logoutButton) {
         "click",
         async function() {
 
-
             const {
                 error
             } =
@@ -790,11 +820,6 @@ if (logoutButton) {
             }
 
 
-            alert(
-                "Вы вышли из аккаунта."
-            );
-
-
             window.location.href =
                 "index.html";
 
@@ -805,7 +830,7 @@ if (logoutButton) {
 
 
 // ========================================
-// ПРОВЕРКА ПРИ ЗАПУСКЕ
+// ЗАПУСК
 // ========================================
 
 showUser();
@@ -828,9 +853,6 @@ supabase.auth.onAuthStateChange(
             "SESSION:",
             session
         );
-
-
-        showUser();
 
     }
 );
