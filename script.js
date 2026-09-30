@@ -192,25 +192,28 @@ async function showUser() {
     } = await supabase.auth.getSession();
 
 
-    if (!session) {
+   if (!session) {
 
-        loading.innerHTML = `
-            <div class="message error"
-                 style="display:block">
+    loading.style.display = "none";
 
-                Вы не вошли в аккаунт.
+    profile.style.display = "none";
 
-                <br><br>
+    const authPanel =
+        document.getElementById("authPanel");
 
-                <a href="index.html">
-                    Вернуться на главную
-                </a>
-
-            </div>
-        `;
-
-        return;
+    if (authPanel) {
+        authPanel.style.display = "block";
     }
+
+    return;
+}
+
+const authPanel =
+    document.getElementById("authPanel");
+
+if (authPanel) {
+    authPanel.style.display = "none";
+}
 
 
     const user =
