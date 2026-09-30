@@ -146,7 +146,9 @@ footer{padding:28px 0;background:#0b1e15;color:#9cad9f;font-size:13px}.footer-in
 <a href="#calculator">Калькулятор</a>
 <a href="#works">Работы</a>
 <a href="#contacts">Контакты</a>
-<a href="account.html">👤 Личный кабинет</a>
+<a class="account-link" href="account.html">
+    🔐 Войти / Регистрация
+</a>
 </nav>
 <a class="phone" href="tel:+79992339777">☎ +7 (999) 233-97-77</a>
 <button class="menu-btn" id="menuBtn">☰</button>
@@ -161,7 +163,9 @@ footer{padding:28px 0;background:#0b1e15;color:#9cad9f;font-size:13px}.footer-in
 <a href="#calculator">Калькулятор</a>
 <a href="#works">Наши работы</a>
 <a href="#contacts">Контакты</a>
-<a href="account.html">👤 Личный кабинет</a>
+<a class="account-link" href="account.html">
+    🔐 Войти / Регистрация
+</a>
 </aside>
 <div class="overlay" id="overlay"></div>
 
@@ -540,6 +544,66 @@ renderCalculations();
 updateCalculatorFields();
 renderCalculations();
 </script>
+<script type="module">
 
+import {
+    createClient
+} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+const supabase = createClient(
+    "https://ybburxmftucnvulwhivr.supabase.co",
+    "sb_publishable_O55qe_bIpXjJllD1ODWVjA_dnE91yvC"
+);
+
+
+const accountLinks =
+    document.querySelectorAll(".account-link");
+
+
+async function updateAccountLinks() {
+
+    const {
+        data: {
+            session
+        }
+    } =
+        await supabase.auth.getSession();
+
+
+    accountLinks.forEach(function(link) {
+
+        if (session) {
+
+            link.textContent =
+                "👤 Личный кабинет";
+
+        } else {
+
+            link.textContent =
+                "🔐 Войти / Регистрация";
+
+        }
+
+        link.href =
+            "account.html";
+
+    });
+
+}
+
+
+updateAccountLinks();
+
+
+supabase.auth.onAuthStateChange(
+    function() {
+
+        updateAccountLinks();
+
+    }
+);
+
+</script>
 </body>
 </html>
