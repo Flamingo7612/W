@@ -1162,6 +1162,209 @@ main{
 <div id="loading">
 Проверяем авторизацию...
 </div>
+      <!-- ============================= -->
+<!-- LOGIN / REGISTRATION -->
+<!-- ============================= -->
+
+<div id="authPanel" style="display:none;">
+
+    <div class="profile-card">
+
+        <div class="profile-content">
+
+            <div class="buttons" style="margin-bottom:25px;">
+
+                <button
+                    type="button"
+                    id="showLogin"
+                    class="btn btn-primary"
+                >
+                    🔐 Войти
+                </button>
+
+                <button
+                    type="button"
+                    id="showRegister"
+                    class="btn btn-green"
+                >
+                    📝 Регистрация
+                </button>
+
+            </div>
+
+
+            <!-- ВХОД -->
+
+            <form id="loginForm">
+
+                <h2 class="edit-title">
+                    🔐 Вход в личный кабинет
+                </h2>
+
+                <p class="edit-description">
+                    Введите email и пароль для входа.
+                </p>
+
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Email
+                    </label>
+
+                    <input
+                        id="loginEmail"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="Введите email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Пароль
+                    </label>
+
+                    <input
+                        id="loginPassword"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="Введите пароль"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="width:100%;"
+                >
+                    🔐 Войти
+                </button>
+
+
+                <div
+                    id="loginMessage"
+                    class="message"
+                    style="display:none;"
+                ></div>
+
+            </form>
+
+
+            <!-- РЕГИСТРАЦИЯ -->
+
+            <form
+                id="registerForm"
+                style="display:none;"
+            >
+
+                <h2 class="edit-title">
+                    📝 Создание аккаунта
+                </h2>
+
+                <p class="edit-description">
+                    Создайте аккаунт, чтобы оформлять заказы
+                    и отслеживать их статус.
+                </p>
+
+
+                <div class="form-group">
+
+                    <label for="registerName">
+                        Ваше имя
+                    </label>
+
+                    <input
+                        id="registerName"
+                        type="text"
+                        autocomplete="name"
+                        placeholder="Введите имя"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="registerEmail">
+                        Email
+                    </label>
+
+                    <input
+                        id="registerEmail"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="Введите email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="registerPhone">
+                        Телефон
+                    </label>
+
+                    <input
+                        id="registerPhone"
+                        type="tel"
+                        autocomplete="tel"
+                        placeholder="+7 (999) 123-45-67"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="registerPassword">
+                        Пароль
+                    </label>
+
+                    <input
+                        id="registerPassword"
+                        type="password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        placeholder="Минимум 6 символов"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="width:100%;"
+                >
+                    📝 Создать аккаунт
+                </button>
+
+
+                <div
+                    id="registerMessage"
+                    class="message"
+                    style="display:none;"
+                ></div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- PROFILE -->
@@ -1552,7 +1755,42 @@ type="button"
 <!-- ============================= -->
 <!-- JAVASCRIPT -->
 <!-- ============================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const authPanel = document.getElementById("authPanel");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+
+    const showLogin = document.getElementById("showLogin");
+    const showRegister = document.getElementById("showRegister");
+
+    if (!authPanel) return;
+
+
+    showLogin.addEventListener("click", function () {
+
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+
+        showLogin.className = "btn btn-primary";
+        showRegister.className = "btn btn-green";
+
+    });
+
+
+    showRegister.addEventListener("click", function () {
+
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+
+        showLogin.className = "btn btn-green";
+        showRegister.className = "btn btn-primary";
+
+    });
+
+});
+</script>
 <script
 type="module"
 src="script.js"
